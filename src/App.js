@@ -1,24 +1,34 @@
-import logo from './logo.svg';
 import './App.css';
+import MainNav from './components/pages/MainNav/MainNav'
+import {Route, Switch} from 'react-router-dom'
+import React, { useState } from "react"
+import BookIndex from './components/pages/BookIndex'
+import BookPage from './components/pages/BookPage/BookPage'
 
 function App() {
+
+  const [booksFromSearch, setBooksFromSearch] = useState([])
+  const [user, setUser] = useState({})
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <MainNav
+      setBooksFromSearch={setBooksFromSearch}
+      setUser={setUser}/>
+      <Switch>
+        <Route exact path="/">
+          <Home/>
+        </Route>
+        <Route path="/bookindex">
+          <BookIndex booksFromSearch={booksFromSearch}/>
+        </Route>
+        <Route path="/bookpage/:id">
+          <BookPage />
+        </Route>
+      </Switch>
+    </>
+  
   );
 }
 
