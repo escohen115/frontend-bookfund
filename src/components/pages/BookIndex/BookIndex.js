@@ -1,4 +1,4 @@
-import BookCard from '../BookCard'
+import BookCard from './BookCard'
 
 export default function BookIndex ({booksFromSearch}){
 

@@ -20,9 +20,12 @@ export default function Search ({setBooksFromSearch}){
     return(
         <div className="MainNav">
             <form className="search-form" onSubmit={handleSubmit}>
-                <input 
-                onChange={e=>setSearchInput(e.target.value)}
-                value={searchInput}/>
+                <label> Search:
+                    <input 
+                    type="text"
+                    onChange={e=>setSearchInput(e.target.value)}
+                    value={searchInput}/>
+                </label>
                 <button type='submit'> Search </button>
             </form>
         </div> 
