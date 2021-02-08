@@ -8,13 +8,16 @@ import Home from './components/pages/Home/Home'
 import UserPage from './components/pages/UserPage/UserPage'
 import LogIn from  './components/pages/MainNav/LogIn'
 import SignUp from './components/pages/MainNav/SignUp'
-
+import OtherUserPage from './components/pages/OtherUserPage/OtherUserPage'
+// const puppeteer = require('puppeteer');
+// const puppeteer = require('puppeteer')
 
 function App() {
 
   const [booksFromSearch, setBooksFromSearch] = useState([])
   const [user, setUser] = useState(null)
   const [savedBooks, setSavedBooks] = useState([])
+
 
   useEffect(()=>{
     fetch(`http://localhost:3000/books`)
@@ -37,10 +40,13 @@ function App() {
           <BookIndex booksFromSearch={booksFromSearch}/>
         </Route>
         <Route path="/bookpage/:id">
-          <BookPage savedBooks={savedBooks} setSavedBooks={setSavedBooks} user={user}/>
+          <BookPage savedBooks={savedBooks} setSavedBooks={setSavedBooks} user={user} setUser={setUser}/>
+        </Route>
+        <Route path="/otheruserpage/:id">
+          <OtherUserPage />
         </Route>
         <Route exact path="/userpage">
-          <UserPage user={user}/>
+          <UserPage user={user} savedBooks={savedBooks} />
         </Route>
         <Route exact path="/login">
           <LogIn 

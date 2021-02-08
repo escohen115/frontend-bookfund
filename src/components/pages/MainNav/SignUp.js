@@ -29,6 +29,7 @@ export default function SignUp ({user, setUser}){
                 setFormState({})
             }
             else{
+                alert(`welcome aboard ${data.username}!`)
                 setUser(data)
                 setFormState({})
             }

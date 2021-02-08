@@ -1,26 +1,29 @@
 import {useState } from "react";
 
-export default function SponsorForm({waitingsMapped, book}){
+export default function SponsorForm({waitingsMapped, book, user, waitlistRequest, setWaitlistRequest, setBackEndBook, backEndBook}){
     
 
     const[number, setNumber] = useState(0)
-
 
 
     function handleSponsorSubmission(e){
 
         e.preventDefault()
         let confObj = {
-            method: 'POST',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({sponsors: e.target.number.value})
+            body: JSON.stringify({num_books_funded: e.target.number.value, sponsor_id: user.id })
         }
         fetch(`http://localhost:3000/waitings/sponsor/${book.id}`, confObj)
+        .then(response=>response.json())
+        .then(data=>{
+            setWaitlistRequest(!waitlistRequest)
+        })
+   
 
     }
-
 
         return (
             <form className="signup" onSubmit={e=>handleSponsorSubmission(e)} >
@@ -32,6 +35,6 @@ export default function SponsorForm({waitingsMapped, book}){
                     <input type="submit" value="Sponsor" className="button"/>
             </form>
         )
-        
+
     }
     

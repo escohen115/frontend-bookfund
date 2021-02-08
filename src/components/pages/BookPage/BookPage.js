@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import SponsorForm from './SponsorForm'
+import ReviewForm from './ReviewForm'
 
-export default function BookPage({setSavedBooks, savedBooks, user}){
+
+export default function BookPage({setSavedBooks, savedBooks, user, setUser}){
 
     const [book, setBook] = useState ({})
     const [backEndBook, setBackEndBook] = useState(false)
@@ -10,8 +12,13 @@ export default function BookPage({setSavedBooks, savedBooks, user}){
     const [toggleSponsorForm, setToggleSponsorForm] = useState(false)
     const [bookId, setBookId] = useState(0)
     const params = useParams()
-    let waitingsMapped = null
 
+
+
+
+    let waitingsMapped = null
+    let waitingsFulfilledMapped = null
+    let reviewsMapped = null
     
     function stripHtml(html){
         let tmp = document.createElement("DIV");
@@ -49,7 +56,7 @@ export default function BookPage({setSavedBooks, savedBooks, user}){
         }
 
         })
-    },[waitlistRequest])
+    },[waitlistRequest, backEndBook, params.id])
 
 
     function waitListRequestAndStoreInDBRequest (){
@@ -72,21 +79,52 @@ export default function BookPage({setSavedBooks, savedBooks, user}){
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({user_id: user.id, book_id: bookId}),
+                body: JSON.stringify({user_id: user.id, book_id: bookId, fulfilled: false}),
             }
-            fetch('http://localhost:3000/waitings', confObj)
-            .then(setBackEndBook(true),setWaitlistRequest(!waitlistRequest))
+                fetch('http://localhost:3000/waitings', confObj)
+                .then(response=>response.json())
+                .then(data=>{                  
+                    setBackEndBook(true)
+                    setWaitlistRequest(!waitlistRequest)
+                    if (data.error){
+                        alert(`${data.error}`)
+                    }
+                    else{
+                        fetch(`http://localhost:3000/users/${user.id}`)
+                        .then(response=>response.json())
+                        .then(data=>setUser(data))
+                 
+                        fetch(`http://localhost:3000/books`)
+                        .then(response=>response.json())
+                        .then(data=>setSavedBooks(data))
+
+                    }
+                })
             })
         }
         else{
-            alert('Please sign in to wait for a book')
+            alert('Please sign in to join a waitlist.')
         }
     }
+    
 
     if (backEndBook){
         waitingsMapped = book.waitings.map(waiting=>{
-            return<li>{waiting.user.username}</li>
+            if (waiting.fulfilled !== true){
+                return<li><Link to={`/otheruserpage/${waiting.user.id}`}>{waiting.user.username}</Link></li>
+            }
         })
+
+        waitingsFulfilledMapped = book.waitings.map(waiting=>{
+            if (waiting.fulfilled === true){
+                return<li><Link to={`/otheruserpage/${waiting.user.id}`}>{waiting.user.username}</Link></li>
+            }
+        })
+
+        reviewsMapped = book.reviews.map(review=>{  
+                return<li>{review.text} - <Link to={`/otheruserpage/${review.user.id}`}>{review.user.username}</Link> </li>
+        })
+        
     }
 
     function handleToggleRequest(){
@@ -99,11 +137,6 @@ export default function BookPage({setSavedBooks, savedBooks, user}){
     }
 
     
-
-
-
-
-    
     return(
         <>
             <img src={ book ? book.image_url: "N/A" }></img>
@@ -112,16 +145,60 @@ export default function BookPage({setSavedBooks, savedBooks, user}){
             <p>by: {book? book.authors: "N/A"} ({book? book.publishedDate: "N/A"}) </p>
             <p>Publishing House: {book? book.publisher: "N/A"}</p>
             <p>Description: {book? book.description: "N/A"} </p>
+            <button onClick={waitListRequestAndStoreInDBRequest}>Jump on the Waitlist for this book</button>
 
+            
+
+            
+        { backEndBook ?
+        <>
             <p>Waitlist:</p>
 
-            <ol>{ backEndBook ? waitingsMapped: "false"} </ol>
+            <ol>{ waitingsMapped.length > 0 ? waitingsMapped: "No one is currently waiting for this book. Be the first!"} </ol>
 
-            <button onClick={waitListRequestAndStoreInDBRequest}>Jump on the Waitlist for this book</button>
+            
             <button onClick={handleToggleRequest}> Sponsor this Book</button>
-            {toggleSponsorForm ? <SponsorForm waitingsMapped={waitingsMapped} book={book}/> : null}
+            {toggleSponsorForm ? 
+                <SponsorForm 
+                    waitingsMapped={waitingsMapped} 
+                    book={book} 
+                    user={user}
+                    waitlistRequest={waitlistRequest}
+                    setWaitlistRequest={setWaitlistRequest}
+                    setBackEndBook={setBackEndBook}
+                    backEndBook={backEndBook}
+                /> 
+            : null}
+
+            
+            <p>Users who have received this book</p>
+            {waitingsFulfilledMapped.length > 0 ? <ol> {waitingsFulfilledMapped}  </ol>: "No one has received this book yet. Join the waitlist to be the first!"}
+
+            <p>Reviews:</p>
+            {reviewsMapped.length > 0 ? <ol> {reviewsMapped} </ol> : "No one has reviewed this book yet. Be the first!"} 
+
+            <ReviewForm 
+                user={user} 
+                book={book} 
+                waitlistRequest={waitlistRequest} 
+                setWaitlistRequest={setWaitlistRequest}
+                backEndBook={backEndBook}
+                setBackEndBook={setBackEndBook}/>
+            </>
+        : null
+        }
 
         </>
     )
 
 }
+
+
+
+
+
+
+
+
+
+
