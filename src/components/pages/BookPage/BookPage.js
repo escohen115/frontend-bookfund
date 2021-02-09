@@ -136,10 +136,19 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser}){
         }
     }
 
+    function handleScrapeRequest(){
+        let title = book.title.split(' ').join('+')
+        fetch(`http://localhost:3000/books/scrape/${title}`)
+    }
+
     
     return(
         <>
             <img src={ book ? book.image_url: "N/A" }></img>
+
+            <button onClick={handleScrapeRequest}>Scrape</button>
+
+
             <h2>{book? book.title: "N/A"}</h2>
             <h3>{book? book.subtitle: "N/A"}</h3>
             <p>by: {book? book.authors: "N/A"} ({book? book.publishedDate: "N/A"}) </p>
