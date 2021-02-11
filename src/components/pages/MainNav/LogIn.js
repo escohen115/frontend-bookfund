@@ -27,8 +27,9 @@ export default function LogIn ({setUser}){
         fetch('http://localhost:3000/users/login', confObj)
         .then(response=>response.json())
         .then(data=>{
+            console.log(data)
             setUser(data)      
-            // history.push('/')
+            history.push('/userpage')
         })
 
     }

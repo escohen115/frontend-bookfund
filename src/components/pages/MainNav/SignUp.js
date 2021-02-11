@@ -3,10 +3,13 @@ import React,{useState} from "react"
 
 export default function SignUp ({user, setUser}){
 
-    const [formState, setFormState] = useState({})
+    const [formState, setFormState] = useState({
+        eligible: true
+    })
 
     function handleChange(e){
         setFormState({
+            ...formState,
             [e.target.name]: e.target.value
         })
     }

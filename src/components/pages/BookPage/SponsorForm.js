@@ -1,6 +1,6 @@
 import {useState } from "react";
 
-export default function SponsorForm({waitingsMapped, book, user, waitlistRequest, setWaitlistRequest, setBackEndBook, backEndBook}){
+export default function SponsorForm({waitingsMapped, book, user, setUser, waitlistRequest, setWaitlistRequest, setBackEndBook, backEndBook}){
     
 
     const[number, setNumber] = useState(0)
@@ -20,6 +20,20 @@ export default function SponsorForm({waitingsMapped, book, user, waitlistRequest
         .then(response=>response.json())
         .then(data=>{
             setWaitlistRequest(!waitlistRequest)
+            let body = {username: user.name}
+            let confObj = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({username: user.username}),
+            }
+            fetch('http://localhost:3000/users/login', confObj)
+            .then(response=>response.json())
+            .then(data=>{
+                setUser(data)
+            })
+            
         })
    
 

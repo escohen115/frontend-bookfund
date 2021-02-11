@@ -4,17 +4,15 @@ import SponsorForm from './SponsorForm'
 import ReviewForm from './ReviewForm'
 
 
-export default function BookPage({setSavedBooks, savedBooks, user, setUser}){
+export default function BookPage({setSavedBooks, savedBooks, user, setUser, timeLeft, reviewLeft}){
 
     const [book, setBook] = useState ({})
     const [backEndBook, setBackEndBook] = useState(false)
     const [waitlistRequest, setWaitlistRequest] = useState(false)
     const [toggleSponsorForm, setToggleSponsorForm] = useState(false)
     const [bookId, setBookId] = useState(0)
+    const [buyLink, setBuyLink] = useState('')
     const params = useParams()
-
-
-
 
     let waitingsMapped = null
     let waitingsFulfilledMapped = null
@@ -26,7 +24,18 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser}){
         return tmp.textContent || tmp.innerText || "";
     }
 
+    // useEffect(()=>{
+    //     if (book.title){
+    //         let title = book.title.split(' ').join('+')
+    //         fetch(`http://localhost:3000/books/scrape/${title}`)
+    //         .then(response=>response.json())
+    //         .then(data=>console.log(data))
+    //     }
+
+    // },[book])
+
     useEffect(()=>{
+
     fetch(`http://localhost:3000/books`)
     .then(response=>response.json())
     .then(data=>{
@@ -58,50 +67,53 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser}){
         })
     },[waitlistRequest, backEndBook, params.id])
 
+   
 
     function waitListRequestAndStoreInDBRequest (){
         
         if (user){
-            let confObj = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(book),
-            }
-            fetch('http://localhost:3000/books', confObj)
-            .then(response=>response.json())
-            .then(data=>{
-                setBook(data)
-                setBookId(data.id)
                 let confObj = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({user_id: user.id, book_id: bookId, fulfilled: false}),
-            }
-                fetch('http://localhost:3000/waitings', confObj)
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(book),
+                }
+                fetch('http://localhost:3000/books', confObj)
                 .then(response=>response.json())
-                .then(data=>{                  
-                    setBackEndBook(true)
-                    setWaitlistRequest(!waitlistRequest)
-                    if (data.error){
-                        alert(`${data.error}`)
+                .then(data=>{
+                    setBook(data)
+                    setBookId(data.id)
+                    let bookIdea = data.id
+                    let confObj = {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({user_id: user.id, book_id: bookIdea, fulfilled: false}),
                     }
-                    else{
-                        fetch(`http://localhost:3000/users/${user.id}`)
-                        .then(response=>response.json())
-                        .then(data=>setUser(data))
-                 
-                        fetch(`http://localhost:3000/books`)
-                        .then(response=>response.json())
-                        .then(data=>setSavedBooks(data))
+                    fetch('http://localhost:3000/waitings', confObj)
+                    .then(response=>response.json())
+                    .then(data=>{                  
+                        setBackEndBook(true)
+                        setWaitlistRequest(!waitlistRequest)
+                        if (data.error){
+                            alert(`${data.error}`)
+                        }
+                        else{
+                            fetch(`http://localhost:3000/users/${user.id}`)
+                            .then(response=>response.json())
+                            .then(data=>setUser(data))
+                    
+                            fetch(`http://localhost:3000/books`)
+                            .then(response=>response.json())
+                            .then(data=>setSavedBooks(data))
 
-                    }
+                        }
+                    })
                 })
-            })
         }
+
         else{
             alert('Please sign in to join a waitlist.')
         }
@@ -122,9 +134,40 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser}){
         })
 
         reviewsMapped = book.reviews.map(review=>{  
-                return<li>{review.text} - <Link to={`/otheruserpage/${review.user.id}`}>{review.user.username}</Link> </li>
+            if (user){
+                return(
+                    <li>
+                        {review.text} - {review.rating} stars - <Link to={`/otheruserpage/${review.user.id}`}>{review.user.username}</Link> 
+                
+                        {review.user.id === user.id ? <button id={review.id} onClick={e=>handleCommentDelete(e)}>X</button> :null}
+                    </li>
+                )   
+            }
+            else{
+                return(
+                    <li>
+                        
+                        {review.text} - {review.rating} stars - <Link to={`/otheruserpage/${review.user.id}`}>{review.user.username}</Link> 
+                        
+                    </li>
+                )   
+                    
+            }
         })
         
+    }
+
+    function handleCommentDelete(e){
+        let reviewId = parseInt(e.target.id)
+        let confObj = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }
+        fetch(`http://localhost:3000/reviews/${reviewId}`, confObj)
+        .then(data=>setWaitlistRequest(!waitlistRequest))
+
     }
 
     function handleToggleRequest(){
@@ -136,18 +179,13 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser}){
         }
     }
 
-    function handleScrapeRequest(){
-        let title = book.title.split(' ').join('+')
-        fetch(`http://localhost:3000/books/scrape/${title}`)
-    }
-
     
     return(
         <>
             <img src={ book ? book.image_url: "N/A" }></img>
 
-            <button onClick={handleScrapeRequest}>Scrape</button>
-
+            {/* <button onClick={handleScrapeRequest}>Scrape</button> */}
+            <a href ="https://www.google.com/" >google</a>
 
             <h2>{book? book.title: "N/A"}</h2>
             <h3>{book? book.subtitle: "N/A"}</h3>
@@ -155,7 +193,7 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser}){
             <p>Publishing House: {book? book.publisher: "N/A"}</p>
             <p>Description: {book? book.description: "N/A"} </p>
             <button onClick={waitListRequestAndStoreInDBRequest}>Jump on the Waitlist for this book</button>
-
+            
             
 
             
@@ -172,6 +210,7 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser}){
                     waitingsMapped={waitingsMapped} 
                     book={book} 
                     user={user}
+                    setUser={setUser}
                     waitlistRequest={waitlistRequest}
                     setWaitlistRequest={setWaitlistRequest}
                     setBackEndBook={setBackEndBook}
@@ -192,7 +231,8 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser}){
                 waitlistRequest={waitlistRequest} 
                 setWaitlistRequest={setWaitlistRequest}
                 backEndBook={backEndBook}
-                setBackEndBook={setBackEndBook}/>
+                setBackEndBook={setBackEndBook}
+                setSavedBooks={setSavedBooks}/>
             </>
         : null
         }
