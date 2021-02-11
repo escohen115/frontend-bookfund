@@ -1,7 +1,7 @@
 import React, {useState, useRef, useEffect} from 'react'
 
  
-const Timer = ({mostRecent, timeLeft, setTimeLeft, displayTimer })=>{
+const Timer = ({mostRecent, timeLeft, setTimeLeft, displayTimer, setDisplayTimerTwo })=>{
     console.log('timer')
     const [timerDays, setTimerDays] = useState(0)
     const [timerHours, setTimerHours] = useState(0)
@@ -15,7 +15,7 @@ const Timer = ({mostRecent, timeLeft, setTimeLeft, displayTimer })=>{
 
         // const countDownDate = new Date(parseInt(mostRecent.sponsor_date)+1209600000)
         // const countDownDate = new Date(parseInt(mostRecent.sponsor_date)+180000)
-        
+
         const countDownDate = new Date(parseInt(mostRecent.sponsor_date)+20000)
 
    
@@ -32,6 +32,7 @@ const Timer = ({mostRecent, timeLeft, setTimeLeft, displayTimer })=>{
                 setTimeLeft(false)
                 clearInterval(interval.current)
                 displayTimer = false
+                setDisplayTimerTwo(false)
             }
             else{
                 //update timer

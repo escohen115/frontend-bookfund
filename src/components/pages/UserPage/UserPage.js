@@ -15,6 +15,8 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
     let receivedMapped = null
     let waitlistMapped = null
     let displayTimer = false
+
+    const[displayTimerTwo, setDisplayTimerTwo] = useState(true)
     
     console.log('userpage')
 
@@ -86,12 +88,13 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
         console.log('timeleft:', timeLeft)
         return(
             <div> 
-            { displayTimer ?
+            { displayTimer && displayTimerTwo ?
                 <Timer 
                     mostRecent={mostRecent}
                     timeLeft={timeLeft} 
                     setTimeLeft={setTimeLeft}
                     displayTimer={displayTimer}
+                    setDisplayTimerTwo={setDisplayTimerTwo}
                 />
             : null}
                 {displayTimer === false && reviewLeft === true ? "Looks like you're eligible for your next book!" : null}
