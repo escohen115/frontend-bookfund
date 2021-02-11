@@ -2,7 +2,7 @@ import React, {useState, useRef, useEffect} from 'react'
 
  
 const Timer = ({mostRecent, timeLeft, setTimeLeft, displayTimer })=>{
-    
+    console.log('timer')
     const [timerDays, setTimerDays] = useState(0)
     const [timerHours, setTimerHours] = useState(0)
     const [timerMinutes, setTimerMinutes] = useState(0)
@@ -15,6 +15,7 @@ const Timer = ({mostRecent, timeLeft, setTimeLeft, displayTimer })=>{
 
         // const countDownDate = new Date(parseInt(mostRecent.sponsor_date)+1209600000)
         // const countDownDate = new Date(parseInt(mostRecent.sponsor_date)+180000)
+        
         const countDownDate = new Date(parseInt(mostRecent.sponsor_date)+20000)
 
    

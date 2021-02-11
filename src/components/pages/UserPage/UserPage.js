@@ -9,17 +9,20 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
 
     let waitingsMapped = []
     let waitingsFulFilledMapped = []
-    let mostRecent = null
+    let mostRecent = {}
     let foundBook = null
     let foundReview = null
     let receivedMapped = null
     let waitlistMapped = null
     let displayTimer = false
     
-    console.log('hello')
+    console.log('userpage')
+
+    useEffect(()=>{
+        
+    },[])
     
     if (user){ 
-
 
         let waitingsUnfulfilled = user.waitings.filter(waiting=>waiting.fulfilled!==true)//get all unfulfilled waitings for a user
         for(let i=0;i<waitingsUnfulfilled.length;i++){
@@ -47,14 +50,18 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
             mostRecent = (waitingsFulfilled.sort(function (a, b){ // find most recent received
                 return b.id - a.id
             })[0])
-            if (mostRecent){
+            if (Object.keys(mostRecent).length !== 0){ // if theres not most recent book
+                
                 //check mostRecent.waiting date. if no time left between creation and future deadline, setTimeLeft(false), and vice versa
                 let creationDate = new Date(parseInt(mostRecent.sponsor_date)+20000).getTime()
                 let now = new Date().getTime()
 
-                if (now < creationDate){ //wait period has not passed
+                if (now < creationDate){ // wait period has not passed
                     displayTimer = true
-                    console.log('timeleft: ', (now > creationDate))
+                }
+                else
+                {
+                    displayTimer = false
                 }
 
             }
@@ -65,15 +72,18 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
                         setReviewLeft(true)
                     }
                     else{
-                        setReviewLeft(false)
+                        setReviewLeft(false) //if book was found without a review
                     }
                     
                 }
-                else{ // if no book is on waiting list
+                else{ // if no book is on received list
                     setReviewLeft(true)
                 }
         }
 
+    }
+    if (user){
+        console.log('timeleft:', timeLeft)
         return(
             <div> 
             { displayTimer ?
@@ -108,13 +118,10 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
 
             </div>
         )
+
     }
-
-
-
-
     else{
-        return null
+        return <p>please log in</p>
     }
 }
 

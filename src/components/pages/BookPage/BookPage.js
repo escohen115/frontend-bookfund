@@ -4,7 +4,7 @@ import SponsorForm from './SponsorForm'
 import ReviewForm from './ReviewForm'
 
 
-export default function BookPage({setSavedBooks, savedBooks, user, setUser, timeLeft, reviewLeft}){
+export default function BookPage({setSavedBooks, savedBooks, user, setUser, reviewLeft}){
 
     const [book, setBook] = useState ({})
     const [backEndBook, setBackEndBook] = useState(false)
@@ -51,10 +51,14 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, time
             fetch(`https://www.googleapis.com/books/v1/volumes/${params.id}`)
             .then(response => response.json())
             .then(data=>{
+                let authors = [""]
+                if (data.volumeInfo.authors){
+                    authors = data.volumeInfo.authors
+                }
                 setBook({
                     title: data.volumeInfo.title, 
                     subtitle: data.volumeInfo.subtitle, 
-                    authors: data.volumeInfo.authors.join(", "), 
+                    authors: authors.join(", "), 
                     publisher: data.volumeInfo.publisher, 
                     publishedDate: data.volumeInfo.publishedDate, 
                     description: stripHtml(data.volumeInfo.description),

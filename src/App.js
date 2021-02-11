@@ -22,15 +22,18 @@ function App() {
   const [timeLeft, setTimeLeft] = useState(true)
   const [reviewLeft, setReviewLeft] = useState(false)
 
-  console.log('time left:', timeLeft)
+  
+
+  console.log('app time left:', timeLeft)
+  
   useEffect(()=>{
     fetch(`http://localhost:3000/books`)
     .then(response=>response.json())
     .then(data=>setSavedBooks(data))
   },[user])
 
-  console.log('timeleft:', timeLeft)
-  console.log('reviewLeft:', reviewLeft)
+  // console.log('timeleft:', timeLeft)
+  // console.log('reviewLeft:', reviewLeft)
 
   useEffect(()=>{
     if (user){
@@ -56,7 +59,7 @@ function App() {
       }
 
     }
-  },[])
+  },[timeLeft, reviewLeft])
 
 
 
