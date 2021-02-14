@@ -1,12 +1,17 @@
 div#root{
-  /* font-family: Menlo; */
   font-family: "Avenir", monospace;
-  
+  padding: 2px;
+  background: black;
+}
+
+.app{
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
 }
 
 .book-card{
   display: inline-flex;
-  /* border: 2px solid black; */
 }
 
 .book-index{
@@ -15,43 +20,26 @@ div#root{
   margin: 30px;
 }
 
-/* .parent {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(6, 1fr);
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-  border: solid black 2px;
-} */
-
-.main-nav { 
-  grid-area: 1 / 1 / 2 / 6; 
-  /* border: solid black 2px; */
-  padding: 20px;
-  margin: 10px; 
-  padding: 22px 25px;
-  /* text-align: center; */
-  text-decoration: none;
-  /* display: inline-block; */
-  /* float: right; */
-  
-  /* margin: auto;
-  display: flex; */
+.pop{
+  padding-left: 20px;
   
 }
 
 
 .home-info { 
   grid-area: 2 / 1 / 4 / 6; 
-  border: solid black 2px;
   padding: 20px;
   margin: 10px; 
+  background: #f2f2f2;
+  border-radius: 20px;
+  
 }
 .popular-now { 
   grid-area: 4 / 1 / 7 / 6; 
-  border: solid black 2px;
   padding: 20px;
   margin: 10px; 
+  background: #f2f2f2;
+  border-radius: 20px;
 }
 
 .next-back-button{
@@ -59,12 +47,113 @@ div#root{
   margin-top: 20px;
 }
 
-.logo{
-  /* background-color: #ccff66;
-  color: #ff9933;
-  font-family: "Avenir";
-  padding: 10px;
-  width: 155px;
-  text-align: center;
-  border-radius: 20px; */
+h1.logo{
+  float: left;
+  margin: auto;
 }
+
+.signed-in{
+  float: left;
+}
+
+
+
+
+
+
+
+
+.main-nav ul {
+  list-style-type: none;
+  margin: 20px;
+  padding: 0;
+  overflow: hidden;
+  text-align: center;
+
+}
+
+.main-nav li {
+  display: inline-block;
+}
+
+.main-nav li.logo{
+  float: left
+}
+
+.main-nav li a { 
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+.main-nav li a:hover {
+  /* background-color: grey; */
+}
+
+
+
+.main-nav li.search-form{
+  margin: auto;
+  text-align:center;
+}
+
+.main-nav li.search-form .search-input{
+  width: 500px;
+}
+
+.navLinks{
+  float: right;
+}
+
+
+/* bookpage */
+
+.bookpage {
+display: grid;
+grid-template-columns: repeat(5, 1fr);
+grid-template-rows: repeat(5, 1fr);
+grid-column-gap: 0px;
+grid-row-gap: 0px;
+}
+
+.book-info { 
+  grid-area: 1 / 1 / 4 / 4; 
+  padding: 20px;
+  margin: 10px; 
+  background: #f2f2f2;
+  border-radius: 20px;
+  }
+.reviews { 
+  grid-area: 4 / 1 / 6 / 4; 
+  padding: 20px;
+  margin: 10px; 
+  background: #f2f2f2;
+  border-radius: 20px;}
+
+.bookpage-waiting-list {
+  grid-area: 1 / 4 / 4 / 5; 
+  padding: 20px;
+  margin: 10px; 
+  background: #f2f2f2;
+  border-radius: 20px;
+  }
+
+.bookpage-sponsor-list { 
+  grid-area: 1 / 5 / 4 / 6; 
+  padding: 20px;
+  margin: 10px; 
+  background: #f2f2f2;
+  border-radius: 20px;
+  }
+
+.similar-books { 
+  grid-area: 4 / 4 / 6 / 6;
+  padding: 20px;
+  margin: 10px; 
+  background: #f2f2f2;
+  border-radius: 20px;
+   }
+

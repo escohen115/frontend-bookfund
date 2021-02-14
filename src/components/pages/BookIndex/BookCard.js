@@ -9,9 +9,11 @@ export default function BookCard({book}){
                 <Card>
                     <Image src={ book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail: null }wrapped ui={false} />
                     <Card.Content>
-                    <Card.Header><Link to={`/bookpage/${book.id}`}>{book.volumeInfo.title.slice(0,100)} </Link></Card.Header>
+                    <Card.Header>
+                        {book.volumeInfo.title ? <Link to={`/bookpage/${book.id}`}>{book.volumeInfo.title.slice(0,100)} </Link> : null}
+                    </Card.Header>
                     <Card.Meta>
-                        {book.volumeInfo.subtitle ? book.volumeInfo.subtitle.slice(0,100): null}
+                        {book.volumeInfo.subtitle ? book.volumeInfo.subtitle.slice(0,50): null}
                     </Card.Meta>
                     <Card.Description>
                         {book.volumeInfo.authors ? book.volumeInfo.authors[0]: null}

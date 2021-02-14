@@ -1,6 +1,6 @@
 import { useParams, Link} from "react-router-dom";
 import React, { useEffect, useState } from "react"
-
+import BackEndBookCard from '../BookIndex/BackEndBookCard'
 
 export default function OtherUserPage({savedBooks}){
 
@@ -19,18 +19,13 @@ export default function OtherUserPage({savedBooks}){
 
 
     if (otherUser && savedBooks.length > 0){  
-        
+
         let waitingsUnfulfilled = otherUser.waitings.filter(waiting=>waiting.fulfilled!==true)
         for(let i=0;i<waitingsUnfulfilled.length;i++){
         waitingsMapped.push(savedBooks.find(saved_book => saved_book.id === waitingsUnfulfilled[i].book_id))
         } 
         waitlistMapped = waitingsMapped.map(waiting=>{
-            return (
-            <li>
-                <img src = {waiting.image_url }></img>
-                <Link to={`/bookpage/${waiting.api_id}`}>{waiting.title}</Link>
-            </li>
-            )
+            return (<BackEndBookCard book={waiting}/>)
         })
  
         return(

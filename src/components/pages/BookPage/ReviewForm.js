@@ -1,13 +1,16 @@
 import {useState } from "react";
 
-export default function ReviewForm ({user, book, setSavedBooks, setWaitlistRequest, waitlistRequest, backEndBook, setBackEndBook}){
+export default function ReviewForm ({user, book, setSavedBooks, setWaitlistRequest, waitlistRequest, waitListRequestAndStoreInDBRequest, backEndBook, setBackEndBook}){
 
+    
     const [formState, setFormState] = useState({
         text: ""
     })
 
     function handleChange(e){
-        if (user){
+        // waitListRequestAndStoreInDBRequest()
+    
+        if (user && backEndBook){
             setFormState({
                 user_id: user.id, 
                 book_id: book.id,
@@ -58,9 +61,9 @@ export default function ReviewForm ({user, book, setSavedBooks, setWaitlistReque
                 cols={25}
                 onChange={e=>handleChange(e)}
             />
-            {formState.text.length < 100 ? (
+            {/* {formState.text.length < 100 ? (
             <p style={{ color: "red" }}>Please leave a review with more than 100 characters</p>
-            ) : null}
+            ) : null} */}
             <button type='submit'> Submit </button>
         </form>
         

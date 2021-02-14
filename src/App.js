@@ -22,8 +22,6 @@ function App() {
   const [timeLeft, setTimeLeft] = useState(true)
   const [reviewLeft, setReviewLeft] = useState(false)
 
-  
-  
 
   console.log('app time left:', timeLeft)
   
@@ -66,13 +64,14 @@ function App() {
 
 
   return (
-    <>
+    <div className="app">
     <MainNav
       setBooksFromSearch={setBooksFromSearch}
       setUser={setUser}
       user={user}
       startIndex={startIndex}
-      setStartIndex={setStartIndex}/>
+      setStartIndex={setStartIndex}
+    />
       <Switch>
         <Route exact path="/">
           <Home/>
@@ -119,7 +118,7 @@ function App() {
           user={user}/>
         </Route>
       </Switch>
-    </>
+    </div>
   
   );
 }

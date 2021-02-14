@@ -17,6 +17,7 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
     let displayTimer = false
 
     const[displayTimerTwo, setDisplayTimerTwo] = useState(true)
+    const[index, setIndex] = useState(0)
     
     console.log('userpage')
 
@@ -95,10 +96,11 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
                     setTimeLeft={setTimeLeft}
                     displayTimer={displayTimer}
                     setDisplayTimerTwo={setDisplayTimerTwo}
+                    reviewLeft={reviewLeft}
                 />
             : null}
                 {displayTimer === false && reviewLeft === true ? "Looks like you're eligible for your next book!" : null}
-                {reviewLeft === false && mostRecent!== null? <p>please leave a review for: <BackEndBookCard book={foundBook}/> </p>: null}
+                {reviewLeft === false && mostRecent!== null && (user.waitings.length > 0) ? <p>please leave a review for: <BackEndBookCard book={foundBook}/> </p>: null}
                 <img src={user.profile_pic ? user.profile_pic : null}></img>
                 <p>name:{user.name ? user.name : null}</p>
                 <p>email:{user.email ? user.email : null}</p>
@@ -113,9 +115,13 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
 
                 <p>received:</p>
                 {waitingsFulFilledMapped.length > 0 ? 
+                    <>
                     <Card.Group itemsPerRow={8}>
-                        {receivedMapped}  
+                        {receivedMapped.slice(index, index+8)}  
                     </Card.Group>
+                    {index > 0 ? <button onClick={()=>setIndex(index-8)}>Back</button>: null}
+                    <button onClick={()=>setIndex(index+8)}>Next</button>
+                    </>
                 :null}
                 <p>sponsored list</p>
 

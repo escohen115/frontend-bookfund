@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { Redirect, useHistory } from "react-router-dom";
 
+import { Input, Menu } from 'semantic-ui-react'
+
 export default function Search ({setBooksFromSearch, startIndex, setStartIndex}){
 
     const [searchInput, setSearchInput] = useState("")
@@ -12,7 +14,6 @@ export default function Search ({setBooksFromSearch, startIndex, setStartIndex})
         .then(response=>response.json())
         .then(data=>{
             setBooksFromSearch(data.items)
-            history.push(`/bookindex`)
         })
     },[startIndex])
 
@@ -29,16 +30,14 @@ export default function Search ({setBooksFromSearch, startIndex, setStartIndex})
     }
 
     return(
-        <div className="MainNav">
-            <form className="search-form" onSubmit={handleSubmit}>
-                <label> Search:
-                    <input 
-                    type="text"
-                    onChange={e=>setSearchInput(e.target.value)}
-                    value={searchInput}/>
-                </label>
-                <button type='submit'> Search </button>
+        
+            <form onSubmit={handleSubmit}>
+                <Input icon='search' placeholder='Search...' 
+                type="text"
+                onChange={e=>setSearchInput(e.target.value)}
+                value={searchInput}
+                className="search-input"/>
+            {/* <button type='submit' className="fa fa-search"> Search </button> */}
             </form>
-        </div> 
     )
 }

@@ -9,7 +9,9 @@ export default function BackendBookCard({book}){
                 <Card>
                     <Image src={ book.image_url ? book.image_url: null }wrapped ui={false} />
                     <Card.Content>
-                    <Card.Header><Link to={`/bookpage/${book.api_id}`}>{book.title.slice(0,100)} </Link></Card.Header>
+                    <Card.Header>
+                        {book.title ? <Link to={`/bookpage/${book.api_id}`}>{book.title.slice(0,100)} </Link>:null}
+                    </Card.Header>
                     <Card.Meta>
                         {book.subtitle? book.subtitle: null}
                     </Card.Meta>

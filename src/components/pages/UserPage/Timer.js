@@ -1,8 +1,11 @@
 import React, {useState, useRef, useEffect} from 'react'
 
  
-const Timer = ({mostRecent, timeLeft, setTimeLeft, displayTimer, setDisplayTimerTwo })=>{
+const Timer = ({mostRecent, timeLeft, setTimeLeft, displayTimer, setDisplayTimerTwo, reviewLeft })=>{
     console.log('timer')
+    console.log('reviewleft:', reviewLeft)
+
+    console.log('mostRecent!== null:', (mostRecent!== null))
     const [timerDays, setTimerDays] = useState(0)
     const [timerHours, setTimerHours] = useState(0)
     const [timerMinutes, setTimerMinutes] = useState(0)

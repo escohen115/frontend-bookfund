@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import BackEndBookCard from '../BookIndex/BackEndBookCard'
 import { Card } from 'semantic-ui-react'
 
-export default function Home({user}){
+export default function Home(){
 
     const[books,setBooks] = useState([])
     const[backEndWaitings, setBackEndWaitings] = useState([])
@@ -38,7 +38,7 @@ export default function Home({user}){
         waitings.sort(function (a, b){
             return Object.keys(b)[0] - Object.keys(a)[0]
         })
-        waitingsMapped = waitings.slice(0,6).map(waiting=>{
+        waitingsMapped = waitings.slice(0,8).map(waiting=>{
             return( <BackEndBookCard book = {Object.values(waiting)[0]}/>)
         })
     }
@@ -69,21 +69,24 @@ export default function Home({user}){
         <>
             <div className="home-info">
                 <h2>
-                    Who we are:
+                    Who we are
                 </h2>
+                <p>
+                    BookFund is a platform where users can sponsor books they love to share the joy and knowledge they’ve accumulated with others who share an interest.
+                </p>
             </div>
+
+                <h2 className="pop" >Popular Now</h2>
             <div className="popular-now">
-                <h4>Popular Now:</h4>
                 {waitingsMapped.length >0 ? 
                 <Card.Group itemsPerRow={8}>
                     {waitingsMapped}  
                 </Card.Group>
         
                 :null} 
-                
-                <h4>Top Sponsors:</h4>
-                <ol>{sponsorsMapped.length>0 ? sponsorsMapped :null} </ol>
             </div>
+            <h4>Top Sponsors:</h4>
+                <ol>{sponsorsMapped.length>0 ? sponsorsMapped :null} </ol>
         </>
     )
 }
