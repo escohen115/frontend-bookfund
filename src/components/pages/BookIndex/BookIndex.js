@@ -10,6 +10,7 @@ export default function BookIndex ({booksFromSearch, startIndex, setStartIndex})
 
     if (booksFromSearch){
          booksMapped = booksFromSearch.map(book=>{
+
             return(
                 <BookCard book ={book}/>
             )

@@ -6,17 +6,20 @@ export default function BookCard({book}){
     <Link to={`/bookpage/${book.id}`}>{book.volumeInfo.title} </Link> */}
     return(
         // <div className="book-card">
-                <Card>
-                    <Image src={ book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail: null }wrapped ui={false} />
+                <Card style={{textAlign: 'center'}}>
+                    <Image 
+                        size='tiny' 
+                        src={ book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail: null }wrapped ui={false} 
+                    />
                     <Card.Content>
                     <Card.Header>
-                        {book.volumeInfo.title ? <Link to={`/bookpage/${book.id}`}>{book.volumeInfo.title.slice(0,100)} </Link> : null}
+                        {book.volumeInfo.title ? <Link to={`/bookpage/${book.id}`}>{book.volumeInfo.title.slice(0,50)} </Link> : null}
                     </Card.Header>
-                    <Card.Meta>
+                    {/* <Card.Meta>
                         {book.volumeInfo.subtitle ? book.volumeInfo.subtitle.slice(0,50): null}
-                    </Card.Meta>
+                    </Card.Meta> */}
                     <Card.Description>
-                        {book.volumeInfo.authors ? book.volumeInfo.authors[0]: null}
+                        {book.volumeInfo.authors ? book.volumeInfo.authors[0].slice(0,50): null}
                     </Card.Description>
                     </Card.Content>
                     {/* <Card.Content extra>
@@ -29,3 +32,4 @@ export default function BookCard({book}){
         // </div>
         )
 }
+

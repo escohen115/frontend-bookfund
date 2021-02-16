@@ -24,14 +24,15 @@ const Timer = ({mostRecent, timeLeft, setTimeLeft, displayTimer, setDisplayTimer
    
         interval = setInterval(()=>{
             const now = new Date().getTime()
-            const timeLeft = countDownDate - now
+            const timeRemaining = countDownDate - now
 
-            const days = Math.floor(timeLeft / (1000 * 60 * 60 *24))
-            const hours = Math.floor((timeLeft % (1000 * 60 * 60 *24) / (1000*60*60)))
-            const minutes = Math.floor((timeLeft % (1000 * 60 * 60) / (1000 * 60)))
-            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000)
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 *24))
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 *24) / (1000*60*60)))
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60) / (1000 * 60)))
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000)
             
-            if (timeLeft < 0){
+            if (timeRemaining < 0){
+                // debugger
                 setTimeLeft(false)
                 clearInterval(interval.current)
                 displayTimer = false

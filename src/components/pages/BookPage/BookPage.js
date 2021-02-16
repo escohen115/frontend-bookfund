@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link,  } from "react-router-dom";
 import SponsorForm from './SponsorForm'
 import ReviewForm from './ReviewForm'
 import BookCard from '../BookIndex/BookCard'
-import { Card } from 'semantic-ui-react'
-
+import { Card, Button, Image } from 'semantic-ui-react'
+import ReactStars from 'react-stars'
 
 export default function BookPage({setSavedBooks, savedBooks, user, setUser, reviewLeft}){
  
@@ -15,15 +15,17 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
     const [booksFromSearch, setBooksFromSearch] = useState([])
     const params = useParams()
     const [bookId, setBookId] = useState(0)
-    // const [buyLink, setBuyLink] = useState('')
+    const[similarIndex, setSimilarIndex] = useState(0)
+    const [users, setUsers] = useState([])
 
     let waitingsMapped = null
     let waitingsFulfilledMapped = null
+    let waitingsUnfulfilled = null
     let reviewsMapped = null
     let booksMapped = []
-    // let linkedBookTest = null
-    // let linkedBook = false
-    
+    let averageRating = 0
+    let sponsorsMapped=[]
+
     function stripHtml(html){
         let tmp = document.createElement("DIV");
         tmp.innerHTML = html;
@@ -41,17 +43,9 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
     // },[book])
 
     useEffect(()=>{
-
-        // linkedBookTest = savedBooks.find(book=>book.api_id===params.id)
-        // if (!linkedBookTest)
-        // {
-        //     linkedBook = true
-        // }
-
         fetch(`http://localhost:3000/books`)
         .then(response=>response.json())
         .then(data=>{
-
             let foundBook = null
             foundBook = data.find(book=>book.api_id===params.id)
             setBook(foundBook)
@@ -107,13 +101,18 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
                 })
             }
         })
+
+        fetch(`http://localhost:3000/users`)
+        .then(response=>response.json())
+        .then(data=>setUsers(data))
+
     },[waitlistRequest, backEndBook, params.id])
 
     useEffect(()=>{
         if (book){
             if (book.title){
                 let searchTerms = book.title.split(" ").pop()
-                fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchTerms}&maxResults=3`)
+                fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchTerms}&maxResults=20`)
                 .then(response=>response.json())
                 .then(data=>{
                     setBooksFromSearch(data.items)
@@ -121,6 +120,8 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
             }
         }
     },[book])
+
+  
 
    
 
@@ -174,21 +175,56 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
     }
 
     if (booksFromSearch.length > 0){
-         booksMapped = booksFromSearch.map(book=>{
+         booksMapped = booksFromSearch.slice(similarIndex, similarIndex+3).map(book=>{
             return(
                 <BookCard book ={book}/>
             )
         })
     }
+
+   
     
 
     if (backEndBook === true && book){
+         if (users.length > 0){
+            let sponsorsFiltered = book.waitings.filter(waiting=>waiting.fulfilled===true)
+            
+            let newArr = sponsorsFiltered.map(waiting=>{
+                let num = sponsorsFiltered.filter(wait=>wait.sponsor_id === waiting.sponsor_id).length
+                return({[num]: waiting.sponsor_id})
+            })
+            let arr = []
+            sponsorsMapped = sponsorsFiltered.map(waiting=>{
+                let x = sponsorsFiltered.filter(wait=>wait.sponsor_id===waiting.sponsor_id).length
 
-            waitingsMapped = book.waitings.map(waiting=>{
-                if (waiting.fulfilled !== true){
-                    return<li><Link to={`/otheruserpage/${waiting.user.id}`}>{waiting.user.username}</Link></li>
+                if (arr.find(elem=>elem===waiting.sponsor_id)){
+                    return null
+                }
+                else{
+                arr.push(waiting.sponsor_id)
+                    return(<li>
+                        <Link to={`/otheruserpage/${waiting.sponsor_id}`}>
+                            {users.find(user=>user.id===waiting.sponsor_id).username} 
+                        </Link>
+                        <div style={{float: 'right'}}> {x} {x == 1 ? " copy" : "copies"}</div>
+                    </li>)
                 }
             })
+            sponsorsMapped = sponsorsMapped.filter(waiting=>waiting!==null)
+            console.log(sponsorsMapped)
+        }
+
+         
+        waitingsMapped = book.waitings.map(waiting=>{
+            if (waiting.fulfilled !== true){
+                return(
+                <li>
+                    <Link to={`/otheruserpage/${waiting.user.id}`}>
+                        {waiting.user.username} {waiting.user.eligible? "(eligible)": "(ineligible)"}
+                    </Link>
+                </li>)
+            }
+        })
         
         waitingsFulfilledMapped = book.waitings.map(waiting=>{
             if (waiting.fulfilled === true){
@@ -197,27 +233,46 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
         })
 
         reviewsMapped = book.reviews.map(review=>{  
+            
             if (user){
+                let reducer = (accumulator, currentValue) => accumulator + currentValue;
+                averageRating = book.reviews.map(review=>review.rating).reduce(reducer)/book.reviews.length
                 return(
-                    <li>
-                        {review.text} - {review.rating} stars - <Link to={`/otheruserpage/${review.user.id}`}>{review.user.username}</Link> 
-                
-                        {review.user.id === user.id ? <button id={review.id} onClick={e=>handleCommentDelete(e)}>X</button> :null}
-                    </li>
+                    <div className="review">
+                        <Link to={`/otheruserpage/${review.user.id}`}>{review.user.username}</Link> 
+                        <ReactStars
+                            className="react-stars"
+                            count={5}
+                            value={review.rating}
+                            size={15}
+                            color2={'#ffd700'}
+                            edit={false}
+                            // style={{fontSize: '20px'}}
+                        />
+                        {review.text} 
+                        {review.user.id === user.id ? <Button size='mini' id={review.id} onClick={e=>handleCommentDelete(e)}>Delete</Button> :null}
+                    </div>
                 )   
             }
             else{
+                let reducer = (accumulator, currentValue) => accumulator + currentValue;
+                averageRating = book.reviews.map(review=>review.rating).reduce(reducer)/book.reviews.length
                 return(
                     <li>
-                        
-                        {review.text} - {review.rating} stars - <Link to={`/otheruserpage/${review.user.id}`}>{review.user.username}</Link> 
-                        
+                        <Link to={`/otheruserpage/${review.user.id}`}>{review.user.username}</Link> 
+                        <ReactStars
+                            className="react-stars"
+                            count={5}
+                            value={review.rating}
+                            size={15}
+                            color2={'#ffd700'}
+                            edit={false}
+                        />
+                        {review.text} 
                     </li>
                 )   
-                    
             }
         })
-        
     }
 
     function handleCommentDelete(e){
@@ -242,79 +297,119 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
         }
     }
 
-    
+    function similarNext(){
+        if (similarIndex < booksFromSearch.length - 2){
+            setSimilarIndex(similarIndex+3)
+        }
+        else{
+            alert('No More Books to Display')
+        }
+    }
+
+    function similarBack(){
+        setSimilarIndex(similarIndex-3)
+    }
+
     return(
         <div className="bookpage">
             <div className="book-info">
-                <img src={ book ? book.image_url: "N/A" }></img>
-
-                {/* <button onClick={handleScrapeRequest}>Scrape</button> */}
-
-                <h2>{book? book.title: "N/A"}</h2>
-                <h3>{book? book.subtitle: "N/A"}</h3>
-                <p>by: {book? book.authors: "N/A"} ({book? book.publishedDate: "N/A"}) </p>
-                <p>Publishing House: {book? book.publisher: "N/A"}</p>
-                <p>Description: {book? book.description: "N/A"} </p>
-                
-                
-            </div>
-            
-
-            
-        { backEndBook && book ?
-        <>
-            <div className="reviews">
-                <p>Reviews:</p>
-                {reviewsMapped.length > 0 ? 
-                    <ol > {reviewsMapped} </ol> 
-                : "No one has reviewed this book yet. Be the first!"} 
-                <ReviewForm 
-                user={user} 
-                book={book} 
-                waitlistRequest={waitlistRequest} 
-                setWaitlistRequest={setWaitlistRequest}
-                backEndBook={backEndBook}
-                setBackEndBook={setBackEndBook}
-                setSavedBooks={setSavedBooks}
-                waitListRequestAndStoreInDBRequest={waitListRequestAndStoreInDBRequest}/>
-            </div>
-
-            <div className="bookpage-sponsor-list">
-                <p>Users who have received this book</p>
-                {waitingsFulfilledMapped.length > 0 ? <ol> {waitingsFulfilledMapped}  </ol>: "No one has received this book yet. Join the waitlist to be the first!"}
-                    <button onClick={handleToggleRequest}> Sponsor this Book</button>
-                    {toggleSponsorForm ? 
-                        <SponsorForm 
-                            waitingsMapped={waitingsMapped} 
-                            book={book} 
-                            user={user}
-                            setUser={setUser}
-                            waitlistRequest={waitlistRequest}
-                            setWaitlistRequest={setWaitlistRequest}
-                            setBackEndBook={setBackEndBook}
-                            backEndBook={backEndBook}
-                        /> 
+                <div className="book-info-image">
+                    <Image style={{margin: '40px', float:'right'}}size='small-medium'src={ book ? book.image_url: "N/A" }/>
+                </div>
+                <div className="book-info-info">
+                    <h2 style={{marginBottom: '-15px'}}>{book? book.title: "N/A"}</h2>
+                    <h3>{book? book.subtitle: "N/A"}</h3>
+                    {reviewsMapped ? 
+                        <ReactStars
+                            className="react-stars"
+                            count={5}
+                            value={averageRating}
+                            size={20}
+                            color2={'#ffd700'}
+                            edit={false}
+                            color2={'#ffd700'}
+                        />
                     : null}
+                
+                        <b>by:</b> {book? book.authors: "N/A"} ({book? book.publishedDate: "N/A"})
+                    
+                        <br></br>
+                        <b>Publishing House:</b> {book? book.publisher: "N/A"}
+                        <br></br>
+                        
+                        <b>Description:</b> 
+                        <p>
+                            {book? book.description: "N/A"} 
+                        </p>
+                </div>
+
+
             </div>
+            
 
-            <div className= "bookpage-waiting-list">
-                <p>Waitlist:</p>
-                <ol>{ waitingsMapped.length > 0 ? waitingsMapped: "No one is currently waiting for this book. Be the first!"} </ol>
-                <button onClick={waitListRequestAndStoreInDBRequest}>Jump on the Waitlist for this book</button>
+            { book ? 
+            <>
+                <div className="reviews">
+                    <h3>Reviews</h3>
+                    {backEndBook && reviewsMapped.length > 0 ? 
+                        <ul className="reviewsUl"> {reviewsMapped} </ul> 
+                    : "No one has reviewed this book yet. Be the first!"} 
+                    <ReviewForm 
+                    user={user} 
+                    book={book} 
+                    waitlistRequest={waitlistRequest} 
+                    setWaitlistRequest={setWaitlistRequest}
+                    backEndBook={backEndBook}
+                    setBackEndBook={setBackEndBook}
+                    setSavedBooks={setSavedBooks}
+                    waitListRequestAndStoreInDBRequest={waitListRequestAndStoreInDBRequest}/>
+                </div>
+
+                <div className="bookpage-recipients-list">
+                    <h3  style={{textAlign: 'center'}}>Recipients</h3>
+                    {backEndBook && waitingsFulfilledMapped.length > 0 ? <ol> {waitingsFulfilledMapped}  </ol>: "No one has received this book yet. Join the waitlist to be the first!"}
+                        
+                </div>
+                <div className= "bookpage-waiting-list">
+                    <h3 style={{textAlign: 'center'}}>Waitlist</h3>
+                    <ol>{ backEndBook && waitingsMapped.length > 0 ? waitingsMapped: "No one is currently waiting for this book. Be the first!"} </ol>
+                    <Button onClick={waitListRequestAndStoreInDBRequest}>Join the Waitlist</Button>
+
+                </div>
+                <div  className= "bookpage-sponsor-list">
+                    <h3 style={{textAlign: 'center'}}>Sponsors</h3>
+                    <ol>{ backEndBook && sponsorsMapped.length > 0 ? sponsorsMapped: "No one has sponsored this book yet.  Be the first!"} </ol>
+                    <Button onClick={handleToggleRequest}> Sponsor this Book</Button>
+                        {toggleSponsorForm ? 
+                            <SponsorForm 
+                                waitingsMapped={waitingsMapped} 
+                                book={book} 
+                                user={user}
+                                setUser={setUser}
+                                waitlistRequest={waitlistRequest}
+                                setWaitlistRequest={setWaitlistRequest}
+                                setBackEndBook={setBackEndBook}
+                                backEndBook={backEndBook}
+                            /> 
+                        : null}
+                </div>
+                </>
+            : null
+            }
+            <div className = "similar-books">
+                <h3>Similar Books</h3>
+                {booksFromSearch.length > 0 ? 
+                    <Card.Group itemsPerRow={3}>
+                        {booksMapped}  
+                    </Card.Group>
+                : null}
+                
+                <div className="buttons-combined">
+                    <Button className="next-back-button" onClick={()=>similarNext(similarIndex+3)}>See More</Button>
+                    {similarIndex > 0 ? <Button className="next-back-button" onClick={()=>similarBack(similarIndex+3)}>Go Back</Button>: null}
+                </div>
             </div>
-           
-            </>
-        : null
-        }
-
-        <div className = "similar-books">
-            {booksFromSearch.length > 0 ? 
-                <Card.Group itemsPerRow={3}>
-                    {booksMapped}  
-                </Card.Group>
-            : null}
-        </div>
-
+            
         </div>
     )
 

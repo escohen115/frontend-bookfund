@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BackEndBookCard from '../BookIndex/BackEndBookCard'
-import { Card } from 'semantic-ui-react'
+import { Card, Button } from 'semantic-ui-react'
 
 export default function Home(){
 
     const[books,setBooks] = useState([])
     const[backEndWaitings, setBackEndWaitings] = useState([])
     const[users, setUsers] = useState([])
+    const[index, setIndex] = useState(0)
 
     let waitings = []
     let waitingsMapped = []
@@ -38,7 +39,7 @@ export default function Home(){
         waitings.sort(function (a, b){
             return Object.keys(b)[0] - Object.keys(a)[0]
         })
-        waitingsMapped = waitings.slice(0,8).map(waiting=>{
+        waitingsMapped = waitings.slice(index, (index+8)).map(waiting=>{
             return( <BackEndBookCard book = {Object.values(waiting)[0]}/>)
         })
     }
@@ -68,7 +69,7 @@ export default function Home(){
     return(
         <>
             <div className="home-info">
-                <h2>
+                <h2 className="who">
                     Who we are
                 </h2>
                 <p>
@@ -82,11 +83,16 @@ export default function Home(){
                 <Card.Group itemsPerRow={8}>
                     {waitingsMapped}  
                 </Card.Group>
-        
                 :null} 
             </div>
-            <h4>Top Sponsors:</h4>
+                <div className="buttons-combined">
+                    <Button className="next-back-button"  onClick={()=>setIndex(index+8)}>Next</Button>
+                    {index > 0 ? <Button className="next-back-button" onClick={()=>setIndex(index-8)}>Back</Button>: null}
+                </div>
+            <div className="top-sponsors-home">
+                <h4>Top Sponsors:</h4>
                 <ol>{sponsorsMapped.length>0 ? sponsorsMapped :null} </ol>
+            </div>
         </>
     )
 }

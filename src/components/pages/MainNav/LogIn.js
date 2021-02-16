@@ -35,16 +35,17 @@ export default function LogIn ({setUser}){
     }
 
     return (
-
-        <div className="form ">
-
-            <form className="signup" onSubmit={(e)=>handleSubmit(e)}>
-                <label>
-                    Username:
-                    <input type="text" name="username" onChange={(e)=>handleChange(e)}/>
-                </label>
-                    <input type="submit" value="Login" className="button"/>
-            </form>
-        </div>
+        <>
+            <div className="form ">
+                <form className="signup" onSubmit={(e)=>handleSubmit(e)}>
+                    <label>
+                        Username:
+                        <input type="text" name="username" onChange={(e)=>handleChange(e)}/>
+                    </label>
+                        <input type="submit" value="Login" className="button"/>
+                </form>
+            </div>
+            
+        </>
     )
 }

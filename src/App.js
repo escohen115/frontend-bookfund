@@ -21,9 +21,6 @@ function App() {
   const [startIndex, setStartIndex] = useState(0)
   const [timeLeft, setTimeLeft] = useState(true)
   const [reviewLeft, setReviewLeft] = useState(false)
-
-
-  console.log('app time left:', timeLeft)
   
   useEffect(()=>{
     fetch(`http://localhost:3000/books`)
@@ -31,8 +28,8 @@ function App() {
     .then(data=>setSavedBooks(data))
   },[user])
 
-  // console.log('timeleft:', timeLeft)
-  // console.log('reviewLeft:', reviewLeft)
+  console.log('timeleft:', timeLeft)
+  console.log('reviewLeft:', reviewLeft)
 
   useEffect(()=>{
     if (user){
@@ -56,9 +53,8 @@ function App() {
           }
           fetch(`http://localhost:3000/users/${user.id}`, confObj)
       }
-
     }
-  },[timeLeft, reviewLeft])
+  },[timeLeft, reviewLeft, savedBooks])
 
 
 
@@ -66,9 +62,9 @@ function App() {
   return (
     <div className="app">
     <MainNav
-      setBooksFromSearch={setBooksFromSearch}
       setUser={setUser}
       user={user}
+      setBooksFromSearch={setBooksFromSearch}
       startIndex={startIndex}
       setStartIndex={setStartIndex}
     />
@@ -76,7 +72,7 @@ function App() {
         <Route exact path="/">
           <Home/>
         </Route>
-        <Route exact path="/bookindex">
+        <Route path="/bookindex">
           <BookIndex 
             booksFromSearch={booksFromSearch}
             startIndex={startIndex}
@@ -92,6 +88,10 @@ function App() {
           reviewLeft={reviewLeft}
           timeLeft={timeLeft}
           setSavedBooks={setSavedBooks}
+
+          setBooksFromSearch={setBooksFromSearch}
+          startIndex={startIndex}
+          setStartIndex={setStartIndex}
         />
         </Route>
         <Route path="/otheruserpage/:id">

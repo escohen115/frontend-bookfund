@@ -4,18 +4,20 @@ import SignUp from './SignUp'
 import LogIn from './LogIn'
 import UserPage from '../UserPage/UserPage'
 import { NavLink } from "react-router-dom";
-import { Button } from 'semantic-ui-react'
-import { Input, Menu } from 'semantic-ui-react'
+import { Button, Input, Menu, Header, Image, Modal } from 'semantic-ui-react'
 
 export default function MainNav ({setBooksFromSearch, setUser, user, startIndex, setStartIndex}){
 
     return(
+
         <div className="main-nav">
 
             <ul>
                 <li className="logo">
-                    <h1 >bookFun(d)</h1>
-                    <p className="signed-in">{user ? `signed in as ${user.username}`: "signed out"} </p>
+                    <NavLink to="/"> 
+                        <h1 className="logo-text">bookFun(d)</h1>
+                        {/* <h9 className="signed-in">{user ? `signed in as ${user.username}`: "not signed in"} </h9>   */}
+                    </NavLink>
                 </li>
                 <li className= "search-form">
                     <Search 
@@ -25,32 +27,29 @@ export default function MainNav ({setBooksFromSearch, setUser, user, startIndex,
                     />
                 </li>
                 <div className = "navLinks">
-                    <li>
-                        {user ? null :<NavLink to="/signup"> SignUp </NavLink> }
-                    </li>
-                    <li>
-                        {user ? null :<NavLink to="/login"> Login </NavLink> }
-                    </li>
-                    <li>
-                        {user ? <NavLink to="/userpage">  My Page  </NavLink> :null}
-                    </li>
-                    <li>
-                        {user?<NavLink to="/"className="navLinks" onClick={()=>setUser(null)}>Sign Out</NavLink>:null}
-                    </li>
-                    <li>
-                        <NavLink to="/">  Home  </NavLink>
-                    </li>
+                    
+                        {/* {user ? null :<NavLink to="/signup"> SignUp </NavLink> } */}
+                        {user ? null :<SignUp user={user} setUser={setUser}/> }
+                    
+                        
+                            {user ? null :<Button><NavLink style={{color: 'inherit'}}to="/login"> Login </NavLink></Button> }
+                        
+                    
+                        
+                            {user ? <Button><NavLink style={{color: 'inherit'}} to="/userpage">  My Page  </NavLink></Button> :null}
+                        
+
+                        
+                            {user?<Button><NavLink style={{color: 'inherit'}}to="/" onClick={()=>setUser(null)}>Sign Out</NavLink></Button>:null}
+                        
+
+                        <Button>
+                            <NavLink style={{color: 'inherit'}} to="/">  Home  </NavLink>
+                        </Button>
+                    
                 </div>
+                
             </ul>
-            
-            
-            
-
-            
-            
-            
-
-            
         </div>
     )
 

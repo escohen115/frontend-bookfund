@@ -1,15 +1,16 @@
 import {useState } from "react";
+import ReactStars from 'react-stars'
+import { Button, Comment, Form, Header } from 'semantic-ui-react'
 
 export default function ReviewForm ({user, book, setSavedBooks, setWaitlistRequest, waitlistRequest, waitListRequestAndStoreInDBRequest, backEndBook, setBackEndBook}){
 
     
     const [formState, setFormState] = useState({
-        text: ""
+        text: "",
+        rating: 0
     })
 
-    function handleChange(e){
-        // waitListRequestAndStoreInDBRequest()
-    
+    function handleChange(e){    
         if (user && backEndBook){
             setFormState({
                 user_id: user.id, 
@@ -20,12 +21,28 @@ export default function ReviewForm ({user, book, setSavedBooks, setWaitlistReque
         }
         else{
             setFormState({})
-            alert("please sign in to leave a review")
+            alert("Please sign in to leave a review.")
+        }
+    }
+
+    function ratingChanged(e){
+         if (user && backEndBook){
+            setFormState({
+                ...formState,
+                rating: e
+            })
+        }
+        else{
+            setFormState({})
+            alert("Please sign in to leave a rating.")
         }
     }
 
     function handleSubmit(e){
         e.preventDefault()
+        if (formState.text.length < 100){
+            alert("Please leave a review with more than 100 characters.")
+        }
         if (formState.text.length > 100){
             let confObj = {
                     method: 'POST',
@@ -48,12 +65,17 @@ export default function ReviewForm ({user, book, setSavedBooks, setWaitlistReque
 
     return (
     <div>
+        <h3>Leave A Review</h3>
+        <ReactStars
+            className="react-stars"
+            count={5}
+            onChange={ratingChanged}
+            size={20}
+            color2={'#ffd700'} 
+            value={formState.rating}
+            name="rating"/>
+{/* 
         <form id="review-form" onSubmit={e=>handleSubmit(e)} >
-            <input 
-                type="number" 
-                name="rating" 
-                value={formState.value}
-                onChange={e=>handleChange(e)}/>
             <textarea   
                 value={formState.text}
                 name="text"             
@@ -61,13 +83,23 @@ export default function ReviewForm ({user, book, setSavedBooks, setWaitlistReque
                 cols={25}
                 onChange={e=>handleChange(e)}
             />
-            {/* {formState.text.length < 100 ? (
-            <p style={{ color: "red" }}>Please leave a review with more than 100 characters</p>
-            ) : null} */}
             <button type='submit'> Submit </button>
-        </form>
+        </form> */}
+
+        <Form reply onSubmit={e=>handleSubmit(e)}>
+            <Form.TextArea 
+                value={formState.text}
+                name="text"             
+                rows={3}
+                cols={25}
+                onChange={e=>handleChange(e)}/>
+            <Button type='submit' content='Add Review' labelPosition='left' icon='edit' primary />
+        </Form>
         
     </div> 
     )
     
 }
+{/* {formState.text.length < 100 ? (
+<p style={{ color: "red" }}>Please leave a review with more than 100 characters</p>
+) : null} */}
