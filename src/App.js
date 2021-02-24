@@ -1,7 +1,7 @@
 import './App.css';
 import 'semantic-ui-css/semantic.min.css'
 import MainNav from './components/pages/MainNav/MainNav'
-import {Route, Switch} from 'react-router-dom'
+import {Route, Switch, Redirect} from 'react-router-dom'
 import React, { useEffect, useState } from "react"
 import BookIndex from './components/pages/BookIndex/BookIndex'
 import BookPage from './components/pages/BookPage/BookPage'
@@ -10,27 +10,30 @@ import UserPage from './components/pages/UserPage/UserPage'
 import LogIn from  './components/pages/MainNav/LogIn'
 import SignUp from './components/pages/MainNav/SignUp'
 import OtherUserPage from './components/pages/OtherUserPage/OtherUserPage'
-// const puppeteer = require('puppeteer');
-// const puppeteer = require('puppeteer')
 
 function App() {
 
   const [booksFromSearch, setBooksFromSearch] = useState([])
   const [user, setUser] = useState(null)
   const [savedBooks, setSavedBooks] = useState([])
+  const [users, setUsers] = useState([])
   const [startIndex, setStartIndex] = useState(0)
   const [timeLeft, setTimeLeft] = useState(true)
   const [reviewLeft, setReviewLeft] = useState(false)
+  const [sponsoreeArray, setSponsoreeArray] = useState([])
   
   useEffect(()=>{
+    setTimeLeft(true)
+    setReviewLeft(false)
     fetch(`http://localhost:3000/books`)
     .then(response=>response.json())
     .then(data=>setSavedBooks(data))
+
   },[user])
 
   console.log('timeleft:', timeLeft)
   console.log('reviewLeft:', reviewLeft)
-
+  console.log('user:', user)
   useEffect(()=>{
     if (user){
       if (timeLeft === false && reviewLeft === true){
@@ -69,8 +72,9 @@ function App() {
       setStartIndex={setStartIndex}
     />
       <Switch>
-        <Route exact path="/">
-          <Home/>
+        <Redirect exact from="/" to="/home" />
+        <Route path="/home">
+          <Home />
         </Route>
         <Route path="/bookindex">
           <BookIndex 
@@ -95,9 +99,16 @@ function App() {
         />
         </Route>
         <Route path="/otheruserpage/:id">
-          <OtherUserPage savedBooks={savedBooks}/>
+          <OtherUserPage 
+          user={user} 
+          savedBooks={savedBooks} 
+          timeLeft={timeLeft} 
+          setTimeLeft={setTimeLeft}
+          reviewLeft={reviewLeft}
+          setReviewLeft={setReviewLeft}/>
         </Route>
         <Route exact path="/userpage">
+          {user ? 
           <UserPage 
           user={user} 
           savedBooks={savedBooks} 
@@ -105,9 +116,10 @@ function App() {
           setTimeLeft={setTimeLeft}
           reviewLeft={reviewLeft}
           setReviewLeft={setReviewLeft}
-        />
+          />: <Redirect to = "/home"/>}
+          
         </Route>
-        <Route exact path="/login">
+        {/* <Route exact path="/login">
           <LogIn 
           setUser={setUser}
           user={user}/>
@@ -116,7 +128,7 @@ function App() {
           <SignUp 
           setUser={setUser}
           user={user}/>
-        </Route>
+        </Route> */}
       </Switch>
     </div>
   

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BackEndBookCard from '../BookIndex/BackEndBookCard'
-import { Card, Button } from 'semantic-ui-react'
+import { Card, Button, Image, Icon} from 'semantic-ui-react'
 
 export default function Home(){
 
@@ -12,8 +12,9 @@ export default function Home(){
 
     let waitings = []
     let waitingsMapped = []
-
     let sponsorsMapped = []
+    let topReaders = []
+    let topReadersMapped = []
 
     useEffect(()=>{
         fetch(`http://localhost:3000/books`)
@@ -28,6 +29,8 @@ export default function Home(){
         .then(response=>response.json())
         .then(data=>{setBackEndWaitings(data)})
     },[])
+
+    
 
 
      if (books.length > 0){
@@ -51,19 +54,60 @@ export default function Home(){
             let userSponsors = sponsoredWaitings.filter(waiting=>waiting.sponsor_id===users[i].id)
             sponsorAOH.push({[userSponsors.length]:users[i]})
         }
-        sponsorAOH.sort(function (a, b){
+        let x = sponsorAOH.sort(function (a, b){
             return Object.keys(b)[0] - Object.keys(a)[0]
         })
-        sponsorsMapped = sponsorAOH.slice(0,6).map(sponsor=>{
+        sponsorsMapped = x.slice(0,3).map(sponsor=>{
             return( 
-                <li>
-                    <img src = {Object.values(sponsor)[0].image_url}></img>
-                    <Link to={`/otheruserpage/${Object.values(sponsor)[0].id}`} >{Object.values(sponsor)[0].username} </Link>
-                    <p>sponsors: {Object.keys(sponsor)[0]}</p>
-                </li>
+                    <Card>
+                            <Card.Header><Link to={`/otheruserpage/${Object.values(sponsor)[0].id}`} > <h4 style={{textAlign:'center'}}>{Object.values(sponsor)[0].username}</h4> </Link></Card.Header>
+                        <Card.Content style={{textAlign:'center'}}>
+                            <Image style={{margin:'auto'}} src={Object.values(sponsor)[0].profile_pic? Object.values(sponsor)[0].profile_pic: "https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png"} size='small' circular />
+                            {/* <Card.Meta>
+                                <span className='date'>Joined in 2015</span>
+                            </Card.Meta> */}
+                        </Card.Content>
+                            <Card.Content extra>
+                                <a>
+                            <Icon name='user' />
+                             {Object.keys(sponsor)[0]} sponsors
+                            </a>
+                        </Card.Content>
+                    </Card>
+
+                    
+                    // <p>sponsors: {Object.keys(sponsor)[0]}</p>
+                
 
                 )
         })
+    }
+    if (users.length > 0){
+       topReaders = users.sort(function (a, b){
+            return   (b.waitings.filter(waiting=>waiting.fulfilled===true).length) - (a.waitings.filter(waiting=>waiting.fulfilled===true).length) 
+        })  
+        console.log(topReaders)
+        topReadersMapped = topReaders.slice(0,3).map(reader=>{
+            return( 
+                    <Card>
+                        <Card.Header><Link to={`/otheruserpage/${reader.id}`}> <h4 style={{textAlign:'center'}}>{reader.username} </h4></Link></Card.Header>
+                        <Card.Content style={{textAlign:'center'}}>
+                            <Image src={reader.profile_pic ? reader.profile_pic : "https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png"} size='small' circular />
+                        </Card.Content>
+                            <Card.Content extra>
+                                <a>
+                            <Icon name='book' />
+                             {reader.waitings.filter(waiting=>waiting.fulfilled===true).length } Books Read
+                            </a>
+                        </Card.Content>
+                    </Card>
+
+                
+                
+
+                )
+        })
+        
     }
 
     return(
@@ -72,8 +116,12 @@ export default function Home(){
                 <h2 className="who">
                     Who we are
                 </h2>
-                <p>
-                    BookFund is a platform where users can sponsor books they love to share the joy and knowledge they’ve accumulated with others who share an interest.
+                <p style={{fontSize: '15px'}}>
+                    If you've ever read an impactful book that you wish more people would also read, BookFund is the place for you!
+                    <br></br>
+                    BookFund is a fun way to fund books they love and share the knowledge with others who may have less resources. 
+                    <br></br>
+                    Users can sign up for a book via a waitlist to receive the next sponsored copy of that book. After receiving a book, users must publish a review of the book on the site, as well as enter a two week wait period before they are eligible to receive their next book.
                 </p>
             </div>
 
@@ -89,9 +137,24 @@ export default function Home(){
                     <Button className="next-back-button"  onClick={()=>setIndex(index+8)}>Next</Button>
                     {index > 0 ? <Button className="next-back-button" onClick={()=>setIndex(index-8)}>Back</Button>: null}
                 </div>
-            <div className="top-sponsors-home">
-                <h4>Top Sponsors:</h4>
-                <ol>{sponsorsMapped.length>0 ? sponsorsMapped :null} </ol>
+            <div style={{display:'flex',marginTop: '50px'}}className="bottom-home">
+                 <div className="top-readers-home">
+                    <h4>Top Readers:</h4>
+                    <Card.Group itemsPerRow={3}>
+                        {topReadersMapped.length>0 ? topReadersMapped :null}
+                    </Card.Group>
+                </div>
+
+                <div className="top-sponsors-home">
+                    <h4>Top Sponsors:</h4>
+                    <Card.Group itemsPerRow={3}>
+                        {sponsorsMapped.length>0 ? sponsorsMapped :null}
+                    </Card.Group>
+                </div>
+
+                
+                
+                
             </div>
         </>
     )

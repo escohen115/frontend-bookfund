@@ -3,10 +3,17 @@ import Search from './Search'
 import SignUp from './SignUp'
 import LogIn from './LogIn'
 import UserPage from '../UserPage/UserPage'
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { Button, Input, Menu, Header, Image, Modal } from 'semantic-ui-react'
 
 export default function MainNav ({setBooksFromSearch, setUser, user, startIndex, setStartIndex}){
+
+    let history = useHistory()
+
+    function handleSignOut(){
+        history.push('/home')
+        setUser(null)
+    }
 
     return(
 
@@ -14,8 +21,8 @@ export default function MainNav ({setBooksFromSearch, setUser, user, startIndex,
 
             <ul>
                 <li className="logo">
-                    <NavLink to="/"> 
-                        <h1 className="logo-text">bookFun(d)</h1>
+                    <NavLink to="/" style={{color:' #333'}}> 
+                        <h1 className="logo-text" >bookFun(d)</h1>
                         {/* <h9 className="signed-in">{user ? `signed in as ${user.username}`: "not signed in"} </h9>   */}
                     </NavLink>
                 </li>
@@ -32,7 +39,7 @@ export default function MainNav ({setBooksFromSearch, setUser, user, startIndex,
                         {user ? null :<SignUp user={user} setUser={setUser}/> }
                     
                         
-                            {user ? null :<Button><NavLink style={{color: 'inherit'}}to="/login"> Login </NavLink></Button> }
+                            {user ? null :<LogIn style={{color: 'inherit'}} user={user} setUser={setUser}/> }
                         
                     
                         
@@ -40,7 +47,7 @@ export default function MainNav ({setBooksFromSearch, setUser, user, startIndex,
                         
 
                         
-                            {user?<Button><NavLink style={{color: 'inherit'}}to="/" onClick={()=>setUser(null)}>Sign Out</NavLink></Button>:null}
+                            {user?<Button onClick={()=>handleSignOut()}>  Sign Out  </Button>:null}
                         
 
                         <Button>

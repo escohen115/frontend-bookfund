@@ -1,13 +1,18 @@
 div#root{
   font-family: "Avenir", monospace;
-  padding: 2px;
+  padding-top: 2px;
+  padding-right: 2px;
+  padding-left: 2px;
   background: black;
+  overflow: hidden;
+  color: #333;
   
 }
 
 .app{
   background: white;
-  border-radius: 15px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
   padding: 20px;
   overflow: hidden;
 }
@@ -52,14 +57,14 @@ button.ui.button.next-back-button{
 
 
 .buttons-combined{
-  margin-right: -15px;
+  /* margin-right: -10px; */
   margin-bottom: 5px;
 }
 
 h1.logo{
   float: left;
   margin: auto;
-  
+  color: #333;
 }
 
 .signed-in{
@@ -67,8 +72,18 @@ h1.logo{
 }
 
 .top-sponsors-home{
-  
   padding: 20px;
+  margin: 10px; 
+  background: #f2f2f2;
+  border-radius: 15px;
+  
+}
+
+.top-readers-home{
+  padding: 20px;
+  margin: 10px; 
+  background: #f2f2f2;
+  border-radius: 15px;
 }
 
 
@@ -91,7 +106,7 @@ h1.logo{
 
 .main-nav li a { 
   display: block;
-  color: black;
+  color:  #333;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
@@ -194,6 +209,11 @@ grid-row-gap: 0px;
   /* height: min-content; */
 }
 
+.bookpage-recipients-list ol{
+  overflow: auto;
+  max-height: 400px
+}
+
 .bookpage-sponsor-list {
   grid-area: 2 / 5 / 3 / 6; 
   padding: 20px;
@@ -201,6 +221,11 @@ grid-row-gap: 0px;
   background: #f2f2f2;
   border-radius: 15px;
   height: 460px;
+}
+
+.bookpage-sponsor-list ol{
+  overflow: auto;
+  max-height: 400px
 }
 
 
@@ -246,10 +271,11 @@ grid-row-gap: 0px;
   background: #f2f2f2;
   border-radius: 15px;
 }
-/* 
+
 .userpage{
   padding: 15px;
-} */
+  display: inline;
+}
 
 
 .ui.reply.form{
@@ -263,4 +289,89 @@ grid-row-gap: 0px;
 
 .book-info h3{
   margin-bottom: 5px;
+}
+
+
+
+.userpage-user-info{
+  grid-area: 1 / 2 / 2 / 3;
+  /* width: 50%; */
+  min-height: 400px;
+  max-height: fit-content;
+  padding: 20px;
+  margin: 10px; 
+  background: #f2f2f2;
+  border-radius: 15px;
+  /* float: right; */
+}
+
+.userpage-eligibility-info{
+  grid-area: 1 / 1 / 2 / 2;
+  /* width: 50%; */
+  min-height: 400px;
+  max-height: fit-content;
+  padding: 20px;
+  margin: 10px; 
+  background: #f2f2f2;
+  border-radius: 15px;
+  text-align: center;
+  /* float: left; */
+}
+
+.userpage-eligibility-info h3{
+  /* text-align: center; */
+}
+
+.userpage-top-half{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+.userpage-eligibility-info .ui.card>.image>img{
+  width: 40%;
+}
+
+.container {
+  color: #333;
+  margin: 0 auto;
+  text-align: center;
+}
+
+
+
+.container li {
+  display: inline-block;
+  font-size: 1.5em;
+  list-style-type: none;
+  padding: 1em;
+  text-transform: uppercase;
+}
+
+.container li span {
+  display: block;
+  font-size: 4.5rem;
+}
+
+.container .div{
+  margin: auto;
+}
+
+.message {
+  font-size: 4rem;
+}
+
+#content {
+  display: none;
+  padding: 1rem;
+}
+
+#numbers{
+  margin-bottom: 20px;
+}
+
+.waiting-button {
+  margin-left: 50px;
 }

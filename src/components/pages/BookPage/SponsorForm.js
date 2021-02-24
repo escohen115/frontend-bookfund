@@ -1,14 +1,14 @@
 import {useState } from "react";
 
-export default function SponsorForm({waitingsMapped, book, user, setUser, waitlistRequest, setWaitlistRequest, setBackEndBook, backEndBook}){
+export default function SponsorForm({waitingsMapped, book, user, setUser, waitlistRequest, setWaitlistRequest, setBackEndBook, backEndBook, toggleSponsorForm, setToggleSponsorForm}){
     
 
     const[number, setNumber] = useState(0)
 
 
     function handleSponsorSubmission(e){
-
         e.preventDefault()
+
         let confObj = {
             method: 'PATCH',
             headers: {
@@ -19,6 +19,7 @@ export default function SponsorForm({waitingsMapped, book, user, setUser, waitli
         fetch(`http://localhost:3000/waitings/sponsor/${book.id}`, confObj)
         .then(response=>response.json())
         .then(data=>{
+            setToggleSponsorForm(!toggleSponsorForm)
             setWaitlistRequest(!waitlistRequest)
             let body = {username: user.name}
             let confObj = {
@@ -28,12 +29,6 @@ export default function SponsorForm({waitingsMapped, book, user, setUser, waitli
                 },
                 body: JSON.stringify({username: user.username}),
             }
-            fetch('http://localhost:3000/users/login', confObj)
-            .then(response=>response.json())
-            .then(data=>{
-                setUser(data)
-            })
-            
         })
    
 

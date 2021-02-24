@@ -2,7 +2,8 @@ import {useState } from "react";
 import ReactStars from 'react-stars'
 import { Button, Comment, Form, Header } from 'semantic-ui-react'
 
-export default function ReviewForm ({user, book, setSavedBooks, setWaitlistRequest, waitlistRequest, waitListRequestAndStoreInDBRequest, backEndBook, setBackEndBook}){
+export default function ReviewForm ({user, book, setSavedBooks, setWaitlistRequest, 
+    waitlistRequest, waitListRequestAndStoreInDBRequest, backEndBook, setBackEndBook, storeInDB}){
 
     
     const [formState, setFormState] = useState({
@@ -11,7 +12,8 @@ export default function ReviewForm ({user, book, setSavedBooks, setWaitlistReque
     })
 
     function handleChange(e){    
-        if (user && backEndBook){
+        if (user){
+            storeInDB()
             setFormState({
                 user_id: user.id, 
                 book_id: book.id,
@@ -20,13 +22,15 @@ export default function ReviewForm ({user, book, setSavedBooks, setWaitlistReque
             })
         }
         else{
+            debugger
             setFormState({})
             alert("Please sign in to leave a review.")
         }
     }
 
     function ratingChanged(e){
-         if (user && backEndBook){
+         if (user){
+            storeInDB()
             setFormState({
                 ...formState,
                 rating: e

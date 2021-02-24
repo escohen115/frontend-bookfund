@@ -106,7 +106,7 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
         .then(response=>response.json())
         .then(data=>setUsers(data))
 
-    },[waitlistRequest, backEndBook, params.id])
+    },[waitlistRequest, backEndBook, params.id, bookId])
 
     useEffect(()=>{
         if (book){
@@ -120,6 +120,30 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
             }
         }
     },[book])
+
+    function storeInDB(){
+        if (user){
+            let confObj = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(book),
+            }
+            fetch('http://localhost:3000/books', confObj)
+            .then(response=>response.json())
+            .then(data=>{
+                setBook(data)
+                setBookId(data.id)
+                setBackEndBook(true)
+                setWaitlistRequest(!waitlistRequest)
+            })
+        }
+        else{
+            alert('Please sign in to leave a review.')
+        }
+    }
+
 
   
 
@@ -139,6 +163,7 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
             .then(data=>{
                 setBook(data)
                 setBookId(data.id)
+                
                 let bookIdea = data.id
                 let confObj = {
                     method: 'POST',
@@ -202,7 +227,9 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
                 }
                 else{
                 arr.push(waiting.sponsor_id)
-                    return(<li>
+                    return(
+                    <li>
+                        <Image src={users.find(user=>user.id===waiting.sponsor_id).profile_pic  ? users.find(user=>user.id===waiting.sponsor_id).profile_pic : "https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png"} size='mini' circular />
                         <Link to={`/otheruserpage/${waiting.sponsor_id}`}>
                             {users.find(user=>user.id===waiting.sponsor_id).username} 
                         </Link>
@@ -219,6 +246,7 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
             if (waiting.fulfilled !== true){
                 return(
                 <li>
+                    <Image src={waiting.user.profile_pic ? waiting.user.profile_pic : "https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png"} size='mini' circular />
                     <Link to={`/otheruserpage/${waiting.user.id}`}>
                         {waiting.user.username} {waiting.user.eligible? "(eligible)": "(ineligible)"}
                     </Link>
@@ -228,7 +256,10 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
         
         waitingsFulfilledMapped = book.waitings.map(waiting=>{
             if (waiting.fulfilled === true){
-                return<li><Link to={`/otheruserpage/${waiting.user.id}`}>{waiting.user.username}</Link></li>
+                return<li>
+                        <Image src={waiting.user.profile_pic ? waiting.user.profile_pic : "https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png"} size='mini' circular />
+                        <Link to={`/otheruserpage/${waiting.user.id}`}>{waiting.user.username}</Link>
+                    </li>
             }
         })
 
@@ -239,6 +270,7 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
                 averageRating = book.reviews.map(review=>review.rating).reduce(reducer)/book.reviews.length
                 return(
                     <div className="review">
+                        <Image src={review.user.profile_pic ? review.user.profile_pic : "https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png"} size='mini'  circular/>
                         <Link to={`/otheruserpage/${review.user.id}`}>{review.user.username}</Link> 
                         <ReactStars
                             className="react-stars"
@@ -259,15 +291,18 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
                 averageRating = book.reviews.map(review=>review.rating).reduce(reducer)/book.reviews.length
                 return(
                     <li>
-                        <Link to={`/otheruserpage/${review.user.id}`}>{review.user.username}</Link> 
-                        <ReactStars
-                            className="react-stars"
-                            count={5}
-                            value={review.rating}
-                            size={15}
-                            color2={'#ffd700'}
-                            edit={false}
-                        />
+                        <div>
+                            <Image src={review.user.profile_pic ? review.user.profile_pic : "https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png"} size='mini' circular />
+                            <Link to={`/otheruserpage/${review.user.id}`}>{review.user.username}</Link> 
+                            <ReactStars
+                                className="react-stars"
+                                count={5}
+                                value={review.rating}
+                                size={15}
+                                color2={'#ffd700'}
+                                edit={false}
+                            />
+                        </div>
                         {review.text} 
                     </li>
                 )   
@@ -290,7 +325,12 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
 
     function handleToggleRequest(){
         if (user){
-        setToggleSponsorForm(!toggleSponsorForm)
+            if (backEndBook){
+                setToggleSponsorForm(!toggleSponsorForm)
+            }
+            else{
+                alert("There is no one on the waitlist.")
+            }
         }
         else{
         alert("Please log in to Sponsor")
@@ -355,6 +395,7 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
                         <ul className="reviewsUl"> {reviewsMapped} </ul> 
                     : "No one has reviewed this book yet. Be the first!"} 
                     <ReviewForm 
+                    storeInDB={storeInDB}
                     user={user} 
                     book={book} 
                     waitlistRequest={waitlistRequest} 
@@ -362,7 +403,9 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
                     backEndBook={backEndBook}
                     setBackEndBook={setBackEndBook}
                     setSavedBooks={setSavedBooks}
-                    waitListRequestAndStoreInDBRequest={waitListRequestAndStoreInDBRequest}/>
+                    waitListRequestAndStoreInDBRequest={waitListRequestAndStoreInDBRequest}
+                    toggleSponsorForm={toggleSponsorForm} 
+                    setToggleSponsorForm={setToggleSponsorForm}/>
                 </div>
 
                 <div className="bookpage-recipients-list">
@@ -373,10 +416,10 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
                 <div className= "bookpage-waiting-list">
                     <h3 style={{textAlign: 'center'}}>Waitlist</h3>
                     <ol>{ backEndBook && waitingsMapped.length > 0 ? waitingsMapped: "No one is currently waiting for this book. Be the first!"} </ol>
-                    <Button onClick={waitListRequestAndStoreInDBRequest}>Join the Waitlist</Button>
+                    <Button className="waiting-button" onClick={waitListRequestAndStoreInDBRequest}>Join the Waitlist</Button>
 
                 </div>
-                <div  className= "bookpage-sponsor-list">
+                <div className= "bookpage-sponsor-list">
                     <h3 style={{textAlign: 'center'}}>Sponsors</h3>
                     <ol>{ backEndBook && sponsorsMapped.length > 0 ? sponsorsMapped: "No one has sponsored this book yet.  Be the first!"} </ol>
                     <Button onClick={handleToggleRequest}> Sponsor this Book</Button>
@@ -390,6 +433,8 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
                                 setWaitlistRequest={setWaitlistRequest}
                                 setBackEndBook={setBackEndBook}
                                 backEndBook={backEndBook}
+                                setToggleSponsorForm={setToggleSponsorForm}
+                                toggleSponsorForm={ toggleSponsorForm}
                             /> 
                         : null}
                 </div>

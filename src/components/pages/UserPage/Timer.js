@@ -2,10 +2,11 @@ import React, {useState, useRef, useEffect} from 'react'
 
  
 const Timer = ({mostRecent, timeLeft, setTimeLeft, displayTimer, setDisplayTimerTwo, reviewLeft })=>{
-    console.log('timer')
-    console.log('reviewleft:', reviewLeft)
+    // console.log('timer')
+    // console.log('reviewleft:', reviewLeft)
+    // console.log('timeleft:', timeLeft)
+    // console.log('mostRecent!== null:', (mostRecent!== null))
 
-    console.log('mostRecent!== null:', (mostRecent!== null))
     const [timerDays, setTimerDays] = useState(0)
     const [timerHours, setTimerHours] = useState(0)
     const [timerMinutes, setTimerMinutes] = useState(0)
@@ -17,9 +18,7 @@ const Timer = ({mostRecent, timeLeft, setTimeLeft, displayTimer, setDisplayTimer
     const startTimer = () => {
 
         // const countDownDate = new Date(parseInt(mostRecent.sponsor_date)+1209600000)
-        // const countDownDate = new Date(parseInt(mostRecent.sponsor_date)+180000)
-
-        const countDownDate = new Date(parseInt(mostRecent.sponsor_date)+20000)
+        const countDownDate = new Date(parseInt(mostRecent.sponsor_date)+60000)
 
    
         interval = setInterval(()=>{
@@ -57,14 +56,20 @@ const Timer = ({mostRecent, timeLeft, setTimeLeft, displayTimer, setDisplayTimer
     })
     
     return (
-        <div>
-      
-            <p>days:{timerDays}</p>
-            <p>hours:{timerHours}</p>
-            <p>minutes:{timerMinutes}</p>
-            <p>seconds:{timerSeconds}</p>
-           
-        </div> 
+        
+
+        <div class="container">
+            <h1 id="headline">Countdown until your next book:</h1>
+                <div id="countdown">
+                    <ul>
+                        <li><span id="numbers">{timerDays}</span>days</li>
+                        <li><span id="numbers">{timerHours}</span>Hours</li>
+                        <li><span id="numbers">{timerMinutes}</span>Minutes</li>
+                        <li><span id="numbers">{timerSeconds} </span>Seconds</li>
+                    </ul>
+                </div>
+          </div>
+         
     )
 }
 
