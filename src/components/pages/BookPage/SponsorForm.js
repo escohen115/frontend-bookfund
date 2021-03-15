@@ -16,19 +16,11 @@ export default function SponsorForm({waitingsMapped, book, user, setUser, waitli
             },
             body: JSON.stringify({num_books_funded: e.target.number.value, sponsor_id: user.id })
         }
-        fetch(`http://localhost:3000/waitings/sponsor/${book.id}`, confObj)
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/waitings/sponsor/${book.id}`, confObj)
         .then(response=>response.json())
         .then(data=>{
             setToggleSponsorForm(!toggleSponsorForm)
             setWaitlistRequest(!waitlistRequest)
-            let body = {username: user.name}
-            let confObj = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({username: user.username}),
-            }
         })
    
 

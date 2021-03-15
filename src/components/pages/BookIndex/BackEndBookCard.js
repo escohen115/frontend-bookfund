@@ -1,9 +1,7 @@
 import {Link} from 'react-router-dom'
-import { Card, Icon, Image } from 'semantic-ui-react'
+import { Card, Image } from 'semantic-ui-react'
 
 export default function BackendBookCard({book, style}){
-    {/* <img src={ book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail: null }></img>
-    <Link to={`/bookpage/${book.id}`}>{book.volumeInfo.title} </Link> */}
     if (book){
         return(
         // <div className="book-card">

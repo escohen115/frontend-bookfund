@@ -1,7 +1,6 @@
 import React,{useState} from "react"
-import { Button, Input, Menu, Header, Image, Modal, Form } from 'semantic-ui-react'
-import { NavLink, useHistory } from "react-router-dom";
-
+import { Button, Modal, Form } from 'semantic-ui-react'
+import { useHistory } from "react-router-dom";
 
 
 export default function SignUp({user, setUser}) {
@@ -46,7 +45,7 @@ export default function SignUp({user, setUser}) {
             body: (form),
         }
 
-        fetch('http://localhost:3000/users', confObj)
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/users`, confObj)
         .then(response=>response.json())
         .then(data=>{
             if (data.error){

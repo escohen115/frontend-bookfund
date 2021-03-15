@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
-import { Input, Menu } from 'semantic-ui-react'
+import { Input } from 'semantic-ui-react'
 
 export default function Search ({setBooksFromSearch, startIndex, setStartIndex}){
 
@@ -15,7 +15,7 @@ export default function Search ({setBooksFromSearch, startIndex, setStartIndex})
         .then(data=>{
             setBooksFromSearch(data.items)
         })
-    },[startIndex])
+    },[startIndex, searchInput, setBooksFromSearch])
 
     function handleSubmit(e){
         e.preventDefault()

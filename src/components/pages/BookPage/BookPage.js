@@ -20,7 +20,6 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
 
     let waitingsMapped = null
     let waitingsFulfilledMapped = null
-    let waitingsUnfulfilled = null
     let reviewsMapped = null
     let booksMapped = []
     let averageRating = 0
@@ -32,18 +31,8 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
         return tmp.textContent || tmp.innerText || "";
     }
 
-    // useEffect(()=>{
-    //     if (book.title){
-    //         let title = book.title.split(' ').join('+')
-    //         fetch(`http://localhost:3000/books/scrape/${title}`)
-    //         .then(response=>response.json())
-    //         .then(data=>console.log(data))
-    //     }
-
-    // },[book])
-
     useEffect(()=>{
-        fetch(`http://localhost:3000/books`)
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/books`)
         .then(response=>response.json())
         .then(data=>{
             let foundBook = null
@@ -102,7 +91,7 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
             }
         })
 
-        fetch(`http://localhost:3000/users`)
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/users`)
         .then(response=>response.json())
         .then(data=>setUsers(data))
 
@@ -130,7 +119,7 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
                 },
                 body: JSON.stringify(book),
             }
-            fetch('http://localhost:3000/books', confObj)
+            fetch(`${process.env.REACT_APP_API_BASE_URL}/books`, confObj)
             .then(response=>response.json())
             .then(data=>{
                 setBook(data)
@@ -145,8 +134,6 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
     }
 
 
-  
-
    
 
     function waitListRequestAndStoreInDBRequest (){
@@ -158,12 +145,11 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
                 },
                 body: JSON.stringify(book),
             }
-            fetch('http://localhost:3000/books', confObj)
+            fetch(`${process.env.REACT_APP_API_BASE_URL}/books`, confObj)
             .then(response=>response.json())
             .then(data=>{
                 setBook(data)
                 setBookId(data.id)
-                
                 let bookIdea = data.id
                 let confObj = {
                     method: 'POST',
@@ -172,7 +158,7 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
                     },
                     body: JSON.stringify({user_id: user.id, book_id: bookIdea, fulfilled: false}),
                 }
-                fetch('http://localhost:3000/waitings', confObj)
+                fetch(`${process.env.REACT_APP_API_BASE_URL}/waitings`, confObj)
                 .then(response=>response.json())
                 .then(data=>{                  
                     setBackEndBook(true)
@@ -180,16 +166,11 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
                     if (data.error){
                         alert(`${data.error}`)
                     }
-                    else{
-                        fetch(`http://localhost:3000/users/${user.id}`)
-                        .then(response=>response.json())
-                        .then(data=>setUser(data))
-                
-                        fetch(`http://localhost:3000/books`)
-                        .then(response=>response.json())
-                        .then(data=>setSavedBooks(data))
-
-                    }
+                    // else{
+                    //     fetch(`${process.env.REACT_APP_API_BASE_URL}/books`)
+                    //     .then(response=>response.json())
+                    //     .then(data=>setSavedBooks(data))
+                    // }
                 })
             })
         }
@@ -202,22 +183,16 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
     if (booksFromSearch.length > 0){
          booksMapped = booksFromSearch.slice(similarIndex, similarIndex+3).map(book=>{
             return(
-                <BookCard book ={book}/>
+                <BookCard book = {book}/>
             )
         })
     }
-
    
     
 
     if (backEndBook === true && book){
          if (users.length > 0){
             let sponsorsFiltered = book.waitings.filter(waiting=>waiting.fulfilled===true)
-            
-            let newArr = sponsorsFiltered.map(waiting=>{
-                let num = sponsorsFiltered.filter(wait=>wait.sponsor_id === waiting.sponsor_id).length
-                return({[num]: waiting.sponsor_id})
-            })
             let arr = []
             sponsorsMapped = sponsorsFiltered.map(waiting=>{
                 let x = sponsorsFiltered.filter(wait=>wait.sponsor_id===waiting.sponsor_id).length
@@ -233,17 +208,16 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
                         <Link to={`/otheruserpage/${waiting.sponsor_id}`}>
                             {users.find(user=>user.id===waiting.sponsor_id).username} 
                         </Link>
-                        <div style={{float: 'right'}}> {x} {x == 1 ? " copy" : "copies"}</div>
+                        <div style={{float: 'right'}}> {x} {x === 1 ? " copy" : "copies"}</div>
                     </li>)
                 }
             })
             sponsorsMapped = sponsorsMapped.filter(waiting=>waiting!==null)
-            console.log(sponsorsMapped)
         }
-
          
         waitingsMapped = book.waitings.map(waiting=>{
             if (waiting.fulfilled !== true){
+                console.log(waiting.user)
                 return(
                 <li>
                     <Image src={waiting.user.profile_pic ? waiting.user.profile_pic : "https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png"} size='mini' circular />
@@ -318,7 +292,7 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
                 'Content-Type': 'application/json',
             }
         }
-        fetch(`http://localhost:3000/reviews/${reviewId}`, confObj)
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/reviews/${reviewId}`, confObj)
         .then(data=>setWaitlistRequest(!waitlistRequest))
 
     }
@@ -367,7 +341,6 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
                             size={20}
                             color2={'#ffd700'}
                             edit={false}
-                            color2={'#ffd700'}
                         />
                     : null}
                 

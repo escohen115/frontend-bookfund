@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import BackEndBookCard from '../BookIndex/BackEndBookCard'
-import { Link, Redirect, useParams } from "react-router-dom";
-import Timer from '../UserPage/Timer'
+import {  useParams } from "react-router-dom";
 import { Card, Button, Image } from 'semantic-ui-react'
 
 
@@ -20,7 +19,6 @@ export default function OtherUserPage({savedBooks, timeLeft, setTimeLeft, review
     let sponsoredMapped = []
     
     const [allWaitings, setAllWaitings] = useState([])
-    const [displayTimerTwo, setDisplayTimerTwo] = useState(true)
     const [index, setIndex] = useState(0)
     const [waitlistIndex, setWaitlistIndex] = useState(0)
     const [sponsoredIndex, setSponsoredIndex] = useState(0)
@@ -28,14 +26,14 @@ export default function OtherUserPage({savedBooks, timeLeft, setTimeLeft, review
     const params = useParams()
 
     useEffect(()=>{
-        fetch(`http://localhost:3000/users/${params.id}`)
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${params.id}`)
         .then(response => response.json())
         .then(data=>setUser(data))  
-    },[])
+    },[params.id])
     
 
     useEffect(()=>{
-    fetch(`http://localhost:3000/waitings`)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/waitings`)
     .then(response=>response.json())
     .then(data=> setAllWaitings(data))
     },[])
@@ -134,10 +132,20 @@ export default function OtherUserPage({savedBooks, timeLeft, setTimeLeft, review
                 else{ // if no book is on received list
                     setReviewLeft(true)
                 }
-        }
-         
-
+        } 
     }
+    
+    function handleNextClick(){
+        if (waitlistIndex < waitlistMapped.length){
+            if (waitlistMapped.length - waitlistIndex > 8){
+                setWaitlistIndex(waitlistIndex+8)
+            }
+            else{
+            setWaitlistIndex(0)
+            }
+        }
+    }
+
     if (user){
         console.log('timeleft:', timeLeft)
         console.log('reviewleft:', reviewLeft)
@@ -147,18 +155,9 @@ export default function OtherUserPage({savedBooks, timeLeft, setTimeLeft, review
         <div className="userpage-top-half">
 
              <div className="userpage-eligibility-info" style={{float:'left'}}>
-                { displayTimer && displayTimerTwo ?
-                <Timer 
-                    mostRecent={mostRecent}
-                    timeLeft={timeLeft} 
-                    setTimeLeft={setTimeLeft}
-                    displayTimer={displayTimer}
-                    setDisplayTimerTwo={setDisplayTimerTwo}
-                    reviewLeft={reviewLeft}
-                />
-            : null}
-                {displayTimer === false && reviewLeft === true ? <h3>Looks like {user.username} is eligible for their next book!</h3> : null}
-                {reviewLeft === false && mostRecent!== null && (user.waitings.length > 0) ? (<div style={{margin:'auto'}} > <h3 >Please leave a review for</h3> <div style={{margin:'auto'}}><BackEndBookCard book={foundBook} style={{margin:'auto'}}/></div> </div>): null}
+                
+                {user.eligible? <h3>Looks like {user.username} is eligible for their next book!</h3> : <h3>Looks like {user.username} needs to wait two weeks or leave a review to be eligible for their next book!</h3>}
+                {/* {reviewLeft === false && mostRecent!== null && (user.waitings.length > 0) ? (<div style={{margin:'auto'}} > <h3 >Please leave a review for</h3> <div style={{margin:'auto'}}><BackEndBookCard book={foundBook} style={{margin:'auto'}}/></div> </div>): null} */}
             </div>
 
                 <div className="userpage-user-info">
@@ -191,7 +190,7 @@ export default function OtherUserPage({savedBooks, timeLeft, setTimeLeft, review
                                 {waitlistMapped.slice(waitlistIndex, waitlistIndex+8)}  
                             </Card.Group>
                         </div>
-                        <Button className="next-back-button"  onClick={()=>setWaitlistIndex(waitlistIndex+8)}>Next</Button>
+                        <Button className="next-back-button"  onClick={handleNextClick}>Next</Button>
                         {waitlistIndex > 0 ? <Button className="next-back-button"  onClick={()=>setIndex(waitlistIndex-8)}>Back</Button>: null}
                     </>
                 :null}
@@ -246,7 +245,7 @@ export default function OtherUserPage({savedBooks, timeLeft, setTimeLeft, review
     
 
 //     useEffect(()=>{
-//         fetch(`http://localhost:3000/users/${params.id}`)
+//         fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${params.id}`)
 //         .then(response => response.json())
 //         .then(data=>setOtherUser(data))  
 //     },[])

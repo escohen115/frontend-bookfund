@@ -7,8 +7,6 @@ import BookIndex from './components/pages/BookIndex/BookIndex'
 import BookPage from './components/pages/BookPage/BookPage'
 import Home from './components/pages/Home/Home'
 import UserPage from './components/pages/UserPage/UserPage'
-import LogIn from  './components/pages/MainNav/LogIn'
-import SignUp from './components/pages/MainNav/SignUp'
 import OtherUserPage from './components/pages/OtherUserPage/OtherUserPage'
 
 function App() {
@@ -16,24 +14,20 @@ function App() {
   const [booksFromSearch, setBooksFromSearch] = useState([])
   const [user, setUser] = useState(null)
   const [savedBooks, setSavedBooks] = useState([])
-  const [users, setUsers] = useState([])
   const [startIndex, setStartIndex] = useState(0)
   const [timeLeft, setTimeLeft] = useState(true)
   const [reviewLeft, setReviewLeft] = useState(false)
-  const [sponsoreeArray, setSponsoreeArray] = useState([])
+
   
   useEffect(()=>{
     setTimeLeft(true)
     setReviewLeft(false)
-    fetch(`http://localhost:3000/books`)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/books`)
     .then(response=>response.json())
     .then(data=>setSavedBooks(data))
-
   },[user])
 
-  console.log('timeleft:', timeLeft)
-  console.log('reviewLeft:', reviewLeft)
-  console.log('user:', user)
+
   useEffect(()=>{
     if (user){
       if (timeLeft === false && reviewLeft === true){
@@ -44,7 +38,7 @@ function App() {
               },
               body: JSON.stringify({eligible: true}),
           }
-          fetch(`http://localhost:3000/users/${user.id}`, confObj)
+          fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${user.id}`, confObj)
       }
       if (timeLeft === true || reviewLeft === false){
         let confObj = {
@@ -54,12 +48,10 @@ function App() {
               },
               body: JSON.stringify({eligible: false}),
           }
-          fetch(`http://localhost:3000/users/${user.id}`, confObj)
+          fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${user.id}`, confObj)
       }
     }
-  },[timeLeft, reviewLeft, savedBooks])
-
-
+  },[timeLeft, reviewLeft, savedBooks, user])
 
 
   return (
@@ -91,8 +83,6 @@ function App() {
           setUser={setUser}
           reviewLeft={reviewLeft}
           timeLeft={timeLeft}
-          setSavedBooks={setSavedBooks}
-
           setBooksFromSearch={setBooksFromSearch}
           startIndex={startIndex}
           setStartIndex={setStartIndex}

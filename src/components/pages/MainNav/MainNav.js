@@ -1,10 +1,8 @@
-import React, { useState } from "react"
 import Search from './Search'
 import SignUp from './SignUp'
 import LogIn from './LogIn'
-import UserPage from '../UserPage/UserPage'
 import { NavLink, useHistory } from "react-router-dom";
-import { Button, Input, Menu, Header, Image, Modal } from 'semantic-ui-react'
+import { Button } from 'semantic-ui-react'
 
 export default function MainNav ({setBooksFromSearch, setUser, user, startIndex, setStartIndex}){
 

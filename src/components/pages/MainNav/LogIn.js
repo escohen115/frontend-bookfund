@@ -1,6 +1,6 @@
 import React,{useEffect, useState} from "react"
 import { useHistory } from "react-router-dom";
-import { Button, Input, Menu, Header, Image, Modal, Form } from 'semantic-ui-react'
+import { Button, Modal, Form } from 'semantic-ui-react'
 
 export default function LogIn ({setUser, user}){
 
@@ -11,7 +11,7 @@ export default function LogIn ({setUser, user}){
 
     useEffect(()=>{
         history.push('/userpage')
-    },[user])
+    },[user, history])
 
     function handleChange(e){
         setFormState({
@@ -30,7 +30,7 @@ export default function LogIn ({setUser, user}){
             body: JSON.stringify(formState),
         }
 
-        fetch('http://localhost:3000/users/login', confObj)
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/users/login`, confObj)
         .then(response=>response.json())
         .then(data=>{
             console.log(data)

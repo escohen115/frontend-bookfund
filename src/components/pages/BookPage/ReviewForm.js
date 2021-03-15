@@ -1,6 +1,6 @@
 import {useState } from "react";
 import ReactStars from 'react-stars'
-import { Button, Comment, Form, Header } from 'semantic-ui-react'
+import { Button, Form } from 'semantic-ui-react'
 
 export default function ReviewForm ({user, book, setSavedBooks, setWaitlistRequest, 
     waitlistRequest, waitListRequestAndStoreInDBRequest, backEndBook, setBackEndBook, storeInDB}){
@@ -55,11 +55,12 @@ export default function ReviewForm ({user, book, setSavedBooks, setWaitlistReque
                     },
                     body: JSON.stringify(formState),
                 }
-            fetch('http://localhost:3000/reviews', confObj)
+
+            fetch(`${process.env.REACT_APP_API_BASE_URL}/reviews`, confObj)
             .then(data=>{
                 setWaitlistRequest(!waitlistRequest)
                 setBackEndBook(true)
-                fetch(`http://localhost:3000/books`)
+                fetch(`${process.env.REACT_APP_API_BASE_URL}/books`)
                 .then(response=>response.json())
                 .then(data=>{setSavedBooks(data)})
             })
@@ -78,18 +79,7 @@ export default function ReviewForm ({user, book, setSavedBooks, setWaitlistReque
             color2={'#ffd700'} 
             value={formState.rating}
             name="rating"/>
-{/* 
-        <form id="review-form" onSubmit={e=>handleSubmit(e)} >
-            <textarea   
-                value={formState.text}
-                name="text"             
-                rows={3}
-                cols={25}
-                onChange={e=>handleChange(e)}
-            />
-            <button type='submit'> Submit </button>
-        </form> */}
-
+            
         <Form reply onSubmit={e=>handleSubmit(e)}>
             <Form.TextArea 
                 value={formState.text}
@@ -104,6 +94,3 @@ export default function ReviewForm ({user, book, setSavedBooks, setWaitlistReque
     )
     
 }
-{/* {formState.text.length < 100 ? (
-<p style={{ color: "red" }}>Please leave a review with more than 100 characters</p>
-) : null} */}

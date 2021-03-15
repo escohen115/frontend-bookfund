@@ -15,17 +15,17 @@ export default function Home(){
     let sponsorsMapped = []
     let topReaders = []
     let topReadersMapped = []
-
+    // console.log(process.env.REACT_APP_API_BASE_URL)
     useEffect(()=>{
-        fetch(`http://localhost:3000/books`)
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/books`)
         .then(response=>response.json())
         .then(data=>{setBooks(data)})
 
-        fetch(`http://localhost:3000/users`)
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/users`)
         .then(response=>response.json())
         .then(data=>{setUsers(data)})
         
-        fetch(`http://localhost:3000/waitings`)
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/waitings`)
         .then(response=>response.json())
         .then(data=>{setBackEndWaitings(data)})
     },[])
@@ -48,7 +48,7 @@ export default function Home(){
     }
 
     if (backEndWaitings.length > 0){ 
-        let sponsoredWaitings = backEndWaitings.filter(waiting=>waiting.fulfilled==true)
+        let sponsoredWaitings = backEndWaitings.filter(waiting=>waiting.fulfilled===true)
         let sponsorAOH=[]
         for (let i=0;i<users.length;i++){
             let userSponsors = sponsoredWaitings.filter(waiting=>waiting.sponsor_id===users[i].id)
@@ -63,20 +63,15 @@ export default function Home(){
                             <Card.Header><Link to={`/otheruserpage/${Object.values(sponsor)[0].id}`} > <h4 style={{textAlign:'center'}}>{Object.values(sponsor)[0].username}</h4> </Link></Card.Header>
                         <Card.Content style={{textAlign:'center'}}>
                             <Image style={{margin:'auto'}} src={Object.values(sponsor)[0].profile_pic? Object.values(sponsor)[0].profile_pic: "https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png"} size='small' circular />
-                            {/* <Card.Meta>
-                                <span className='date'>Joined in 2015</span>
-                            </Card.Meta> */}
                         </Card.Content>
                             <Card.Content extra>
-                                <a>
                             <Icon name='user' />
                              {Object.keys(sponsor)[0]} sponsors
-                            </a>
                         </Card.Content>
                     </Card>
 
                     
-                    // <p>sponsors: {Object.keys(sponsor)[0]}</p>
+                    
                 
 
                 )
@@ -95,10 +90,8 @@ export default function Home(){
                             <Image src={reader.profile_pic ? reader.profile_pic : "https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png"} size='small' circular />
                         </Card.Content>
                             <Card.Content extra>
-                                <a>
                             <Icon name='book' />
                              {reader.waitings.filter(waiting=>waiting.fulfilled===true).length } Books Read
-                            </a>
                         </Card.Content>
                     </Card>
 
@@ -109,17 +102,18 @@ export default function Home(){
         })
         
     }
-
+    
     return(
         <>
             <div className="home-info">
                 <h2 className="who">
                     Who we are
+                    
                 </h2>
                 <p style={{fontSize: '15px'}}>
-                    If you've ever read an impactful book that you wish more people would also read, BookFund is the place for you!
+                    If you've ever read an impactful book that you'd like to share with others, BookFund is the place for you!
                     <br></br>
-                    BookFund is a fun way to fund books they love and share the knowledge with others who may have less resources. 
+                    BookFund is a simple way for users to sponsor books they love and share the knowledge with others. 
                     <br></br>
                     Users can sign up for a book via a waitlist to receive the next sponsored copy of that book. After receiving a book, users must publish a review of the book on the site, as well as enter a two week wait period before they are eligible to receive their next book.
                 </p>
