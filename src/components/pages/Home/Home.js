@@ -107,7 +107,7 @@ export default function Home(){
         <>
             <div className="home-info">
                 <h2 className="who">
-                    Who we are
+                    Who we are test
                     
                 </h2>
                 <p style={{fontSize: '15px'}}>
