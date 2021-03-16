@@ -49,9 +49,10 @@ const Timer = ({mostRecent, timeLeft, setTimeLeft, displayTimer, setDisplayTimer
     }
 
     useEffect(()=>{
+        let current = interval.current
         startTimer()
         return()=>{
-            clearInterval(interval.current)
+            clearInterval(current)
         }
     })
     

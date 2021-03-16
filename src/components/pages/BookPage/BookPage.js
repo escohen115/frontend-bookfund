@@ -19,7 +19,7 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
     const [users, setUsers] = useState([])
 
     let waitingsMapped = null
-    let waitingsFulfilledMapped = null
+    let waitingsFulfilledMapped = 0
     let reviewsMapped = null
     let booksMapped = []
     let averageRating = 0
@@ -215,26 +215,24 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
             sponsorsMapped = sponsorsMapped.filter(waiting=>waiting!==null)
         }
          
-        waitingsMapped = book.waitings.map(waiting=>{
-            if (waiting.fulfilled !== true){
-                console.log(waiting.user)
-                return(
-                <li>
-                    <Image src={waiting.user.profile_pic ? waiting.user.profile_pic : "https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png"} size='mini' circular />
-                    <Link to={`/otheruserpage/${waiting.user.id}`}>
-                        {waiting.user.username} {waiting.user.eligible? "(eligible)": "(ineligible)"}
-                    </Link>
-                </li>)
-            }
+        waitingsMapped = book.waitings.filter(waiting => waiting.fulfilled !== true).map(waiting=>{
+            return(
+            <li>
+                <Image src={waiting.user.profile_pic ? waiting.user.profile_pic : "https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png"} size='mini' circular />
+                <Link to={`/otheruserpage/${waiting.user.id}`}>
+                    {waiting.user.username} {waiting.user.eligible? "(eligible)": "(ineligible)"}
+                </Link>
+            </li>)
         })
         
-        waitingsFulfilledMapped = book.waitings.map(waiting=>{
-            if (waiting.fulfilled === true){
-                return<li>
-                        <Image src={waiting.user.profile_pic ? waiting.user.profile_pic : "https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png"} size='mini' circular />
-                        <Link to={`/otheruserpage/${waiting.user.id}`}>{waiting.user.username}</Link>
-                    </li>
-            }
+       
+        
+        waitingsFulfilledMapped = book.waitings.filter(waiting => waiting.fulfilled === true).map(waiting=>{
+            return(
+            <li>
+                <Image src={waiting.user.profile_pic ? waiting.user.profile_pic : "https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png"} size='mini' circular />
+                <Link to={`/otheruserpage/${waiting.user.id}`}>{waiting.user.username}</Link>
+            </li>)
         })
 
         reviewsMapped = book.reviews.map(review=>{  

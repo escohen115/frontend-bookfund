@@ -14,7 +14,6 @@ export default function OtherUserPage({savedBooks, timeLeft, setTimeLeft, review
     let foundReview = null
     let receivedMapped = null
     let waitlistMapped = null
-    let displayTimer = false
     let sponsoredWaitings = []
     let sponsoredMapped = []
     
@@ -108,11 +107,10 @@ export default function OtherUserPage({savedBooks, timeLeft, setTimeLeft, review
                 let now = new Date().getTime()
 
                 if (now < creationDate){ // wait period has not passed
-                    displayTimer = true
                 }
                 else
                 {
-                    displayTimer = false
+
                     console.log(`setTimeLeft(false)`)
                     setTimeLeft(false)
                 }

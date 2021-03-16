@@ -5,7 +5,7 @@ export default function BackendBookCard({book, style}){
     if (book){
         return(
         // <div className="book-card">
-                <Card style={{textAlign: 'center'}, style}>
+                <Card style={{textAlign: 'center', style}}>
                     <Image size="small" src={ book.image_url ? book.image_url: null }wrapped ui={false} />
                     <Card.Content>
                     <Card.Header>
