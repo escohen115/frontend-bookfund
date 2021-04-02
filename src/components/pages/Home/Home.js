@@ -30,8 +30,6 @@ export default function Home(){
         .then(data=>{setBackEndWaitings(data)})
     },[])
 
-    
-
 
      if (books.length > 0){
         for(let i=0;i < books.length;i++){
@@ -107,7 +105,7 @@ export default function Home(){
         <>
             <div className="home-info">
                 <h2 className="who">
-                    Who we are test
+                    Who we are
                     
                 </h2>
                 <p style={{fontSize: '15px'}}>
