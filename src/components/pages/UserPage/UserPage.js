@@ -82,9 +82,7 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
 
     }
     if (user){
-        // console.log('timeleft:', timeLeft)
-        // console.log('reviewleft:', reviewLeft)
-        // console.log('eligibilty:', user)
+
         return(
         <div className="userpage"> 
 

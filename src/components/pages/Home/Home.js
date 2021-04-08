@@ -30,11 +30,9 @@ export default function Home(){
         .then(data=>{setBackEndWaitings(data)})
     },[])
 
-
      if (books.length > 0){
-        for(let i=0;i < books.length;i++){
+        for(let i=0; i<books.length; i++){
             let waitingsFulFilled = books[i].waitings.filter(waitings=>waitings.fulfilled!==false).length
-
             waitings.push({[waitingsFulFilled]:books[i]})
         }
         waitings.sort(function (a, b){
@@ -142,11 +140,7 @@ export default function Home(){
                     <Card.Group itemsPerRow={3}>
                         {sponsorsMapped.length>0 ? sponsorsMapped :null}
                     </Card.Group>
-                </div>
-
-                
-                
-                
+                </div>                                                
             </div>
         </>
     )

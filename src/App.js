@@ -109,16 +109,6 @@ function App() {
           />: <Redirect to = "/home"/>}
           
         </Route>
-        {/* <Route exact path="/login">
-          <LogIn 
-          setUser={setUser}
-          user={user}/>
-        </Route>
-        <Route exact path="/signup">
-          <SignUp 
-          setUser={setUser}
-          user={user}/>
-        </Route> */}
       </Switch>
     </div>
   
