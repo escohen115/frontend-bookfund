@@ -31,7 +31,7 @@ export default function Home(){
     },[])
 
      if (books.length > 0){
-        for(let i=0; i<books.length; i++){
+        for(let i=0; i< books.length; i++){
             let waitingsFulFilled = books[i].waitings.filter(waitings=>waitings.fulfilled!==false).length
             waitings.push({[waitingsFulFilled]:books[i]})
         }
@@ -39,7 +39,7 @@ export default function Home(){
             return Object.keys(b)[0] - Object.keys(a)[0]
         })
         waitingsMapped = waitings.slice(index, (index+8)).map(waiting=>{
-            return( <BackEndBookCard book = {Object.values(waiting)[0]}/>)
+            return (<BackEndBookCard book = {Object.values(waiting)[0]}/>)
         })
     }
 
@@ -56,14 +56,14 @@ export default function Home(){
         sponsorsMapped = x.slice(0,3).map(sponsor=>{
             return( 
                     <Card>
-                            <Card.Header><Link to={`/otheruserpage/${Object.values(sponsor)[0].id}`} > <h4 style={{textAlign:'center'}}>{Object.values(sponsor)[0].username}</h4> </Link></Card.Header>
-                        <Card.Content style={{textAlign:'center'}}>
-                            <Image style={{margin:'auto'}} src={Object.values(sponsor)[0].profile_pic? Object.values(sponsor)[0].profile_pic: "https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png"} size='small' circular />
-                        </Card.Content>
+                        <Card.Header><Link to={`/otheruserpage/${Object.values(sponsor)[0].id}`} > <h4 style={{textAlign:'center'}}>{Object.values(sponsor)[0].username}</h4> </Link></Card.Header>
+                            <Card.Content style={{textAlign:'center'}}>
+                                <Image style={{margin:'auto'}} src={Object.values(sponsor)[0].profile_pic? Object.values(sponsor)[0].profile_pic: "https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png"} size='small' circular />
+                            </Card.Content>
                             <Card.Content extra>
                             <Icon name='user' />
-                             {Object.keys(sponsor)[0]} sponsors
-                        </Card.Content>
+                                {Object.keys(sponsor)[0]} sponsors
+                            </Card.Content>
                     </Card>
 
                     
@@ -77,7 +77,6 @@ export default function Home(){
        topReaders = users.sort(function (a, b){
             return   (b.waitings.filter(waiting=>waiting.fulfilled===true).length) - (a.waitings.filter(waiting=>waiting.fulfilled===true).length) 
         })  
-        console.log(topReaders)
         topReadersMapped = topReaders.slice(0,3).map(reader=>{
             return( 
                     <Card>
@@ -90,10 +89,6 @@ export default function Home(){
                              {reader.waitings.filter(waiting=>waiting.fulfilled===true).length } Books Read
                         </Card.Content>
                     </Card>
-
-                
-                
-
                 )
         })
         
