@@ -36,7 +36,7 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
         .then(response=>response.json())
         .then(data=>{
             let foundBook = null
-            foundBook = data.find(book=>book.api_id===params.id)
+            foundBook = data.find(book => book.api_id === params.id)
             setBook(foundBook)
 
             if (foundBook){

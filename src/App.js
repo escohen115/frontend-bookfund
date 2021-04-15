@@ -100,13 +100,13 @@ function App() {
         <Route exact path="/userpage">
           {user ? 
           <UserPage 
-          user={user} 
-          savedBooks={savedBooks} 
-          timeLeft={timeLeft} 
-          setTimeLeft={setTimeLeft}
-          reviewLeft={reviewLeft}
-          setReviewLeft={setReviewLeft}
-          />: <Redirect to = "/home"/>}
+            user={user} 
+            savedBooks={savedBooks} 
+            timeLeft={timeLeft} 
+            setTimeLeft={setTimeLeft}
+            reviewLeft={reviewLeft}
+            setReviewLeft={setReviewLeft}
+          /> : <Redirect to = "/home"/>}
           
         </Route>
       </Switch>
