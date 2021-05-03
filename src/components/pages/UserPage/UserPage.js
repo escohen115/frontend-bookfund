@@ -1,4 +1,4 @@
-
+import { Button } from 'semantic-ui-react'
 import React, { useState, useEffect } from "react"
 import { Redirect } from "react-router-dom";
 import Timer from './Timer'
@@ -35,7 +35,7 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
         }
 
         let waitingsFulfilled = user.waitings.filter(waiting=>waiting.fulfilled===true) //get all fulfilled waitings for a user
-        for(let i=0;i<waitingsFulfilled.length;i++){
+        for(let i = 0;i < waitingsFulfilled.length; i++){
             waitingsFulFilledMapped.push(savedBooks.find(saved_book => saved_book.id === waitingsFulfilled[i].book_id)) //create an array of those books by comparing to saved books
         } 
         
@@ -118,6 +118,8 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
                         <br></br>
                         <h4 style={{display:'inline'}}>Bio: </h4>{user.bio !== "undefined" ? user.bio : null}
                     </div>
+
+                    <Button style={{float:'right', marginRight: '50px'}}> Edit Profile Info </Button>
                     
                 </div>
         
