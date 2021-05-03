@@ -31,6 +31,10 @@ export default function SignUp({user, setUser}) {
         e.preventDefault()
         const form = new FormData()
 
+        if (!(formState.username)){
+            alert('Please enter a username.')
+        }
+
         form.append("profile_pic", formState.profile_pic)
         form.append("username", formState.username)
         form.append("name", formState.name)
