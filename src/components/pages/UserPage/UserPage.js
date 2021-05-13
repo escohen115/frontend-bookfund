@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react"
 import { Redirect } from "react-router-dom";
 import Timer from './Timer'
 import BackEndBookCard from '../BookIndex/BackEndBookCard'
-import { Image } from 'semantic-ui-react'
+import { Image, Form } from 'semantic-ui-react'
 import SponsorList from './SponsorList'
 import WaitList from "./WaitList";
 import ReceivedList from './ReceivedList'
@@ -19,19 +19,53 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
     
     const [allWaitings, setAllWaitings] = useState([])
     const [displayTimerTwo, setDisplayTimerTwo] = useState(true)
+    const [editInfo, setEditInfo] = useState(false)
+    const [formState, setFormState] = useState({})
+
     
     useEffect(()=>{
     fetch(`${process.env.REACT_APP_API_BASE_URL}/waitings`)
     .then(response=>response.json())
     .then(data=>setAllWaitings(data))
     },[])
+
+    function handleChange(e){
+        console.log(e)
+        setFormState({
+            ...formState,
+            [e.target.name]: e.target.value
+        })   
+    }
+
+    function handleImage (e){
+        e.persist()
+        setFormState({
+            ...formState,
+            [e.target.name]: e.target.files[0]
+        })
+    }
+
+    function handleSubmit(e){
+        e.preventDefault()
+        const form = new FormData()
+
+        if (!(formState.username)){
+            alert('Please enter a username.')
+        }
+
+        form.append("profile_pic", formState.profile_pic)
+        form.append("username", formState.username)
+        form.append("name", formState.name)
+        form.append("bio", formState.bio)
+        form.append("email", formState.email)
+    
+    }
     
     if (user){ 
-        // if user has no waitings, they're eligible
         if (user.waitings.length < 1){
-            console.log(`setTimeLeft(false)`)
-             setTimeLeft(false)
-             setReviewLeft(true)
+            // console.log(`setTimeLeft(false)`)
+            setTimeLeft(false)
+            setReviewLeft(true)
         }
 
         let waitingsFulfilled = user.waitings.filter(waiting=>waiting.fulfilled===true) //get all fulfilled waitings for a user
@@ -102,10 +136,10 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
                 {displayTimer === false && reviewLeft === true ? <h3>Looks like you're eligible for your next book!</h3> : null}
                 {reviewLeft === false && mostRecent!== null && (user.waitings.length > 0) ? (<div style={{margin:'auto'}} > <h3 >Please leave a review for</h3> <div style={{margin:'auto'}}><BackEndBookCard book={foundBook} style={{margin:'auto'}}/></div> </div>): null}
             </div>
-
-                <div className="userpage-user-info">
-                    <h3>Profile</h3>
-                    <Image src={user.profile_pic ? user.profile_pic : null} size="small" circular style={{float:'left'}}/>
+            <div className="userpage-user-info"  >
+                <h3>Profile</h3>
+                <Image src={user.profile_pic ? user.profile_pic : null} size="small" circular style={{float:'left'}}/>
+                    {editInfo ? null :
                     <div style={{float:'left', marginLeft: '50px'}}>
                         <h4 style={{display:'inline'}}>Name: </h4>{user.name !== "undefined"? user.name : null}
                         <br></br>
@@ -118,10 +152,17 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
                         <br></br>
                         <h4 style={{display:'inline'}}>Bio: </h4>{user.bio !== "undefined" ? user.bio : null}
                     </div>
+                }
 
-                    <Button style={{float:'right', marginRight: '50px'}}> Edit Profile Info </Button>
+            </div>
+
+                
+
+
+
+
+
                     
-                </div>
         
         
         </div>

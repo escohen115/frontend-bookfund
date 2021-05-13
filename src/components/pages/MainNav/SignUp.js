@@ -25,7 +25,7 @@ export default function SignUp({user, setUser}) {
             [e.target.name]: e.target.files[0]
         })
     }
-    console.log(formState)
+
 
     function handleSubmit(e){
         e.preventDefault()
@@ -42,7 +42,7 @@ export default function SignUp({user, setUser}) {
         form.append("email", formState.email)
       
 
-        console.log(formState)
+        // console.log(formState)
         
         let confObj = {
             method: 'POST',
@@ -75,24 +75,7 @@ export default function SignUp({user, setUser}) {
     >
       <Modal.Header>Sign Up</Modal.Header>
       <Modal.Content >
-           {/* <div className="form ">
-
-            <form className="signup" onSubmit={(e)=>handleSubmit(e)}>
-                <label>
-                    Username:
-                    <input type="text" name="username" onChange={(e)=>handleChange(e)}/>
-                <Form.Input 
-                type="file" 
-                name="profile_pic" 
-                fluid label='Image Upload' 
-                onChange={(e)=>handleImage(e)} 
-                />
-                </label>
-                    <input type="submit" value="Sign Up" className="button"/>
-            </form>
-    
-        </div> */}
-
+       
         <Form onSubmit={(e)=>handleSubmit(e)}>
                     <Form.Field>
                         <label>Name</label>
@@ -121,7 +104,7 @@ export default function SignUp({user, setUser}) {
                     onChange={(e)=>handleImage(e)} 
                     />
                     <Button type='submit' style={{float:'right', marginBottom: '10px'}}>Sign Up</Button>
-                </Form>
+            </Form>
          
       </Modal.Content>
 

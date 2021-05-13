@@ -34,18 +34,18 @@ export default function MainNav ({setBooksFromSearch, setUser, user, startIndex,
                 <div className = "navLinks">
                     
                         {/* {user ? null :<NavLink to="/signup"> SignUp </NavLink> } */}
-                        {user ? null :<SignUp user={user} setUser={setUser}/> }
+                        {user ? null : <SignUp user={user} setUser={setUser}/> }
                     
                         
-                            {user ? null :<LogIn style={{color: 'inherit'}} user={user} setUser={setUser}/> }
+                            {user ? null : <LogIn style={{color: 'inherit'}} user={user} setUser={setUser}/> }
                         
                     
                         
-                            {user ? <Button><NavLink style={{color: 'inherit'}} to="/userpage">  My Page  </NavLink></Button> :null}
+                            {user ? <Button> <NavLink style={{color: 'inherit'}} to="/userpage">  My Page  </NavLink></Button> : null}
                         
 
                         
-                            {user?<Button onClick={()=>handleSignOut()}>  Sign Out  </Button>:null}
+                            {user ? <Button onClick={()=>handleSignOut()}>  Sign Out  </Button> : null}
                         
 
                         <Button>

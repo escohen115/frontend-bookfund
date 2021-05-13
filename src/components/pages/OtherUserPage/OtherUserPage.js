@@ -145,15 +145,16 @@ export default function OtherUserPage({savedBooks, timeLeft, setTimeLeft, review
     }
 
     if (user){
-        console.log('timeleft:', timeLeft)
-        console.log('reviewleft:', reviewLeft)
+        // console.log('timeleft:', timeLeft)
+        // console.log('reviewleft:', reviewLeft)
+        console.log('eligibilty:', user.eligible)
         return(
         <div className="userpage"> 
 
         <div className="userpage-top-half">
 
              <div className="userpage-eligibility-info" style={{float:'left'}}>
-                
+
                 {user.eligible? <h3>Looks like {user.username} is eligible for their next book!</h3> : <h3>Looks like {user.username} needs to wait two weeks or leave a review to be eligible for their next book!</h3>}
                 {/* {reviewLeft === false && mostRecent!== null && (user.waitings.length > 0) ? (<div style={{margin:'auto'}} > <h3 >Please leave a review for</h3> <div style={{margin:'auto'}}><BackEndBookCard book={foundBook} style={{margin:'auto'}}/></div> </div>): null} */}
             </div>
