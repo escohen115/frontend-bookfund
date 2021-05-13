@@ -1,7 +1,7 @@
+import {Route, Switch, Redirect} from 'react-router-dom'
 import './App.css';
 import 'semantic-ui-css/semantic.min.css'
 import MainNav from './components/pages/MainNav/MainNav'
-import {Route, Switch, Redirect} from 'react-router-dom'
 import React, { useEffect, useState } from "react"
 import BookIndex from './components/pages/BookIndex/BookIndex'
 import BookPage from './components/pages/BookPage/BookPage'
@@ -20,8 +20,8 @@ function App() {
 
   
   useEffect(()=>{
-    setTimeLeft(true)
-    setReviewLeft(false)
+    setTimeLeft(false)
+    setReviewLeft(true)
     fetch(`${process.env.REACT_APP_API_BASE_URL}/books`)
     .then(response=>response.json())
     .then(data=>setSavedBooks(data))
@@ -40,6 +40,7 @@ function App() {
           }
           fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${user.id}`, confObj)
       }
+
       if (timeLeft === true || reviewLeft === false){
         let confObj = {
               method: 'PATCH',
