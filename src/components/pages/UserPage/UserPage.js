@@ -154,17 +154,7 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
                     </div>
                 }
 
-            </div>
-
-                
-
-
-
-
-
-                    
-        
-        
+            </div>        
         </div>
                 <h3 className="pop">Waitlist</h3>
         
