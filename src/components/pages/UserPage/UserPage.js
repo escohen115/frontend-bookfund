@@ -184,12 +184,13 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
                         onChange={(e)=>handleImage(e)} 
                         />
                     <Button type='submit' style={{float:'right', marginBottom: '10px'}}>Sign Up</Button>
-            </Form>   
-
+                    </Form>   
                 </div>
                     
                 : null}
+
                 <Button style={{float:'right', marginRight: '50px'}} onClick={()=>setEditInfo(!editInfo)}> Edit Profile Info </Button>
+            
             </div>
 
                 
