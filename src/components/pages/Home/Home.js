@@ -102,7 +102,7 @@ export default function Home(){
                     
                 </h2>
                 <p style={{fontSize: '15px'}}>
-                    
+                    test
                     If you've ever read an impactful book that you'd like to share with others, BookFund is the place for you!
                     <br></br>
                     BookFund is a simple way for users to sponsor books they love and share the knowledge with others. 
