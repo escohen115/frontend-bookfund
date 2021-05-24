@@ -117,6 +117,7 @@ export default function Home(){
                     {waitingsMapped}  
                 </Card.Group>
                 :null} 
+
             </div>
                 <div className="buttons-combined">
                     <Button className="next-back-button"  onClick={()=>setIndex(index+8)}>Next</Button>
@@ -124,6 +125,7 @@ export default function Home(){
                 </div>
             <div style={{display:'flex',marginTop: '50px'}}className="bottom-home">
                  <div className="top-readers-home">
+
                     <h4>Top Readers:</h4>
                     <Card.Group itemsPerRow={3}>
                         {topReadersMapped.length>0 ? topReadersMapped :null}
