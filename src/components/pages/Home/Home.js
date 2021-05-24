@@ -100,6 +100,7 @@ export default function Home(){
                 <h2 className="who">
                     Who we are
                     
+                    
                 </h2>
                 <p style={{fontSize: '15px'}}>
                     test
