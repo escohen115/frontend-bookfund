@@ -189,7 +189,7 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
                     
                 : null}
 
-                <Button style={{float:'right', marginRight: '50px'}} onClick={()=>setEditInfo(!editInfo)}> Edit Profile Info </Button>
+                {/* <Button style={{float:'right', marginRight: '50px'}} onClick={()=>setEditInfo(!editInfo)}> Edit Profile Info </Button> */}
             
             </div>
 
