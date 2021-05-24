@@ -154,7 +154,53 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
                     </div>
                 }
 
-            </div>        
+                {editInfo ? 
+                <div style={{float:'left', marginLeft: '50px'}}>
+                     <Form onSubmit={(e)=>handleSubmit(e)}>
+                        <Form.Field>
+                            <label>Name</label>
+                            <input placeholder='Name' name="name" onChange={(e)=>handleChange(e)}/>
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Username</label>
+                            <input placeholder='Username' name="username" onChange={(e)=>handleChange(e)}/>
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Email</label>
+                            <input placeholder='Email' name="email" onChange={(e)=>handleChange(e)}/>
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Password</label>
+                            <input placeholder='Password' type="password" />
+                        </Form.Field>
+                        <Form.Field >
+                            <label>Bio</label>
+                            <input placeholder='Bio' name="bio" onChange={(e)=>handleChange(e)}/>
+                        </Form.Field>
+                        <Form.Input 
+                        type="file" 
+                        name="profile_pic" 
+                        fluid label='Image Upload' 
+                        onChange={(e)=>handleImage(e)} 
+                        />
+                    <Button type='submit' style={{float:'right', marginBottom: '10px'}}>Sign Up</Button>
+            </Form>   
+
+                </div>
+                    
+                : null}
+                <Button style={{float:'right', marginRight: '50px'}} onClick={()=>setEditInfo(!editInfo)}> Edit Profile Info </Button>
+            </div>
+
+                
+
+
+
+
+
+                    
+        
+        
         </div>
                 <h3 className="pop">Waitlist</h3>
         
