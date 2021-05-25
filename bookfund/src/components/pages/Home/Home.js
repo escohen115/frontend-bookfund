@@ -100,7 +100,6 @@ export default function Home(){
                 <h2 className="who">
                     Who we are
                     
-                    
                 </h2>
                 <p style={{fontSize: '15px'}}>
                     If you've ever read an impactful book that you'd like to share with others, BookFund is the place for you!
