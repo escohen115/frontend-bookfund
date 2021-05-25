@@ -107,6 +107,7 @@ function App() {
             setTimeLeft={setTimeLeft}
             reviewLeft={reviewLeft}
             setReviewLeft={setReviewLeft}
+            setUser={setUser}
           /> : <Redirect to = "/home"/>}
           
         </Route>

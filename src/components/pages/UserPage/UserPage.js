@@ -8,7 +8,7 @@ import SponsorList from './SponsorList'
 import WaitList from "./WaitList";
 import ReceivedList from './ReceivedList'
 
-export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, reviewLeft, setReviewLeft}){
+export default function UserPage({user, setUser, savedBooks, timeLeft, setTimeLeft, reviewLeft, setReviewLeft}){
 
     let waitingsFulFilledMapped = []
     let mostRecent = {}
@@ -208,6 +208,7 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
                 <WaitList
                 waitlistMapped={waitlistMapped}
                 user={user}
+                setUser={setUser}
                 savedBooks={savedBooks}/>
 
 

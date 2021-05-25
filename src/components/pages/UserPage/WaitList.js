@@ -1,11 +1,19 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Card, Button } from 'semantic-ui-react'
 import BackEndBookCard from '../BookIndex/BackEndBookCard'
 
-export default function WaitList({waitlistMapped, user, savedBooks}){
+export default function WaitList({waitlistMapped, user, setUser, savedBooks}){
     const [waitlistIndex, setWaitlistIndex] = useState(0)
 
     let waitingsMapped = []
+
+
+    useEffect(()=>{
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${user.id}`)
+        .then(response=>response.json())
+        .then(data=>setUser(data))
+    },[user, setUser])
+
 
      //get all unfulfilled waitings for a user
     let waitingsUnfulfilled = user.waitings.filter(waiting=>waiting.fulfilled!==true)
