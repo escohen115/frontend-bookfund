@@ -1,3 +1,55 @@
+# bookFund
+
+bookFund is a web application where users can sponsor or receive copies of books they’re interested in reading. 
+The purpose behind the app is to twofold: 
+1. Empower and enable individuals from lower economic backgrounds with the opportunity to read books sponsored by others. 
+2. Provide a platform where users can generate positive impact by sponsoring books they've found to be meaningful or inspiring.
+  
+
+## Installation
+
+```bash
+npm start
+```
+
+## Usage
+
+Please note that the current API for this app is hosted by Heroku and load times for an initial request can be roughly 20 seconds
+
+1. Begin by signing up for an account.
+2. You now can sponsor books for others or join a waitlist for a book yourself
+3. Search for a book you want to read or sponsor (the homepage can refer you to popular books). 
+4. After clicking on the link to a book page, you will be able join the waitlist, leave a comment or rating, or sponsor the book.
+5. After joining the waitlist for a book, you can optionally create another account to "sponsor" the book to yourself. 
+6. Now, log in with your original account and navigate to your userpage. There you will see a message asking you to leave a review on the book you've received, as well as a countdown timer until you're eligible to receive your next book. 
+
+
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
