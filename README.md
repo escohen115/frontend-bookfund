@@ -14,7 +14,7 @@ npm start
 
 ## Usage
 
-Please note that the current API for this app is hosted by Heroku and load times for an initial request can be roughly 20 seconds
+Please note that the current API for this app is hosted by Heroku and load times for an initial request can be roughly 20 seconds.
 
 1. Begin by signing up for an account.
 2. You now can sponsor books for others or join a waitlist for a book yourself
@@ -27,16 +27,6 @@ Please note that the current API for this app is hosted by Heroku and load times
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-
-
-
-
-
-
-
-
-
 
 
 
