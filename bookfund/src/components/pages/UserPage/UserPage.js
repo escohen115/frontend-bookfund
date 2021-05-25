@@ -19,7 +19,7 @@ export default function UserPage({user, savedBooks, timeLeft, setTimeLeft, revie
     
     const [allWaitings, setAllWaitings] = useState([])
     const [displayTimerTwo, setDisplayTimerTwo] = useState(true)
-    const [editInfo, setEditInfo] = useState(false)
+    const [editInfo] = useState(false)
     const [formState, setFormState] = useState({})
 
     
