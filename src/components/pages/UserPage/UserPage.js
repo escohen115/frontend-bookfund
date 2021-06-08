@@ -25,8 +25,8 @@ export default function UserPage({user, setUser, savedBooks, timeLeft, setTimeLe
     
     useEffect(()=>{
     fetch(`${process.env.REACT_APP_API_BASE_URL}/waitings`)
-    .then(response=>response.json())
-    .then(data=>setAllWaitings(data))
+    .then(response => response.json())
+    .then(data => setAllWaitings(data))
     },[])
 
     function handleChange(e){
@@ -68,20 +68,37 @@ export default function UserPage({user, setUser, savedBooks, timeLeft, setTimeLe
             setReviewLeft(true)
         }
 
-        let waitingsFulfilled = user.waitings.filter(waiting=>waiting.fulfilled===true) //get all fulfilled waitings for a user
-        for(let i = 0;i < waitingsFulfilled.length; i++){
+        let waitingsFulfilled = user.waitings.filter(waiting=>waiting.fulfilled===true) //get all received books for a user
+        console.log(user.waitings)
+
+
+        for (let i = 0;i < waitingsFulfilled.length; i++){
             waitingsFulFilledMapped.push(savedBooks.find(saved_book => saved_book.id === waitingsFulfilled[i].book_id)) //create an array of those books by comparing to saved books
         } 
+
         
         if (waitingsFulfilled.length < 1){
              setReviewLeft(true)
+             console.log('line 79')
         }
         
         if (waitingsFulfilled.length > 0){
+            console.log('line 82')
+            console.log(waitingsFulfilled)
+
             mostRecent = (waitingsFulfilled.sort(function (a, b){ // find most recent received
-                return b.id - a.id
-            })[0])
-            if (Object.keys(mostRecent).length !== 0){ // if theres not most recent book
+                return  parseFloat(b.sponsor_date) - parseFloat(a.sponsor_date)
+                
+                // return b.id - a.id
+
+                // return Number(a.sponsor_date.replace(/[^0-9\.]+/g,"")) - Number(b.sponsor_date.replace(/[^0-9\.]+/g,""))
+
+            }))[0]
+
+            console.log(mostRecent)
+   
+
+            if (Object.keys(mostRecent).length !== 0){ // if theres a most recent book
                 //check mostRecent.waiting date. if no time left between creation and future deadline, setTimeLeft(false), and vice versa
                 let creationDate = new Date(parseInt(mostRecent.sponsor_date)+60000).getTime()
                 let now = new Date().getTime()
@@ -97,11 +114,17 @@ export default function UserPage({user, setUser, savedBooks, timeLeft, setTimeLe
                 }
 
             }
+
                 foundBook = savedBooks.find(book=>book.id===mostRecent.book_id) // find most recently received book based on most recent waiting
+                
+                console.log(foundBook)
+
                 if (foundBook){
                     foundReview = foundBook.reviews.find(review=>review.user.id===user.id) // check if they left a review on it
                     if (foundReview){
                         setReviewLeft(true)
+                        console.log('line 115')
+                        console.log(foundReview)
                     }
                     else{
                         setReviewLeft(false) //if book was found without a review

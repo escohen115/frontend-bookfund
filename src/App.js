@@ -20,12 +20,12 @@ function App() {
 
   
   useEffect(()=>{
-    setTimeLeft(false)
-    setReviewLeft(true)
+    setTimeLeft(true)
+    setReviewLeft(false)
     fetch(`${process.env.REACT_APP_API_BASE_URL}/books`)
     .then(response=>response.json())
     .then(data=>setSavedBooks(data))
-  },[user])
+  },[user, setUser])
 
 
   useEffect(()=>{
@@ -52,7 +52,7 @@ function App() {
           fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${user.id}`, confObj)
       }
     }
-  },[timeLeft, reviewLeft, savedBooks, user])
+  },[timeLeft, reviewLeft, savedBooks, user, setUser])
 
 
   return (

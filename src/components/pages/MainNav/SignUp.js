@@ -41,9 +41,6 @@ export default function SignUp({user, setUser}) {
         form.append("bio", formState.bio)
         form.append("email", formState.email)
       
-
-        // console.log(formState)
-        
         let confObj = {
             method: 'POST',
             body: (form),
@@ -76,7 +73,7 @@ export default function SignUp({user, setUser}) {
       <Modal.Header>Sign Up</Modal.Header>
       <Modal.Content >
        
-        <Form onSubmit={(e)=>handleSubmit(e)}>
+        <Form onSubmit={(e) => handleSubmit(e)}>
                     <Form.Field>
                         <label>Name</label>
                         <input placeholder='Name' name="name" onChange={(e)=>handleChange(e)}/>
@@ -98,10 +95,10 @@ export default function SignUp({user, setUser}) {
                         <input placeholder='Bio' name="bio" onChange={(e)=>handleChange(e)}/>
                     </Form.Field>
                     <Form.Input 
-                    type="file" 
-                    name="profile_pic" 
-                    fluid label='Image Upload' 
-                    onChange={(e)=>handleImage(e)} 
+                        type="file" 
+                        name="profile_pic" 
+                        fluid label='Image Upload' 
+                        onChange={(e)=>handleImage(e)} 
                     />
                     <Button type='submit' style={{float:'right', marginBottom: '10px'}}>Sign Up</Button>
             </Form>

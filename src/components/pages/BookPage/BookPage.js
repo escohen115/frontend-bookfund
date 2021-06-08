@@ -15,7 +15,7 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
     const [booksFromSearch, setBooksFromSearch] = useState([])
     const params = useParams()
     const [bookId, setBookId] = useState(0)
-    const[similarIndex, setSimilarIndex] = useState(0)
+    const [similarIndex, setSimilarIndex] = useState(0)
     const [users, setUsers] = useState([])
 
     let waitingsMapped = null
@@ -189,13 +189,12 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
     }
    
     
-
     if (backEndBook === true && book){
          if (users.length > 0){
             let sponsorsFiltered = book.waitings.filter(waiting=>waiting.fulfilled===true)
             let arr = []
             sponsorsMapped = sponsorsFiltered.map(waiting=>{
-                let x = sponsorsFiltered.filter(wait=>wait.sponsor_id===waiting.sponsor_id).length
+                let x = sponsorsFiltered.filter(wait => wait.sponsor_id === waiting.sponsor_id).length
 
                 if (arr.find(elem=>elem===waiting.sponsor_id)){
                     return null
@@ -421,7 +420,7 @@ export default function BookPage({setSavedBooks, savedBooks, user, setUser, revi
                 : null}
                 
                 <div className="buttons-combined">
-                    <Button className="next-back-button" onClick={()=>similarNext(similarIndex+3)}>See More</Button>
+                    <Button className="next-back-button" onClick={s}>See More</Button>
                     {similarIndex > 0 ? <Button className="next-back-button" onClick={()=>similarBack(similarIndex+3)}>Go Back</Button>: null}
                 </div>
             </div>

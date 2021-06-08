@@ -12,7 +12,7 @@ export default function WaitList({waitlistMapped, user, setUser, savedBooks}){
         fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${user.id}`)
         .then(response=>response.json())
         .then(data=>setUser(data))
-    },[user, setUser])
+    },[])
 
 
      //get all unfulfilled waitings for a user

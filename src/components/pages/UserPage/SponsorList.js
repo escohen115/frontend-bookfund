@@ -26,7 +26,7 @@ export default function SponsorList({allWaitings, user, savedBooks}){
             sponsoredMapped = arrTwo.map(waiting=>{ //create JSX of books
                 return (<BackEndBookCard book={savedBooks.find(savedBook => savedBook.id === waiting.book_id)}/>)
             })
-            console.log(sponsoredMapped)
+            // console.log(sponsoredMapped)
         }
     }    
     return (
