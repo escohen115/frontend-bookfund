@@ -19,7 +19,7 @@ function App() {
   const [reviewLeft, setReviewLeft] = useState(false)
 
   
-  useEffect(()=>{
+  useEffect(() => {
     setTimeLeft(true)
     setReviewLeft(false)
     fetch(`${process.env.REACT_APP_API_BASE_URL}/books`)

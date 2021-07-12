@@ -4,6 +4,7 @@ bookFund is a web application where users can sponsor or receive copies of books
 The purpose behind the app is to twofold: 
 1. Empower and enable individuals from lower economic backgrounds with the opportunity to read books sponsored by others. 
 2. Provide a platform where users can generate positive impact by sponsoring books they've found to be meaningful or inspiring.
+
   
 
 ## Installation
@@ -120,3 +121,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
