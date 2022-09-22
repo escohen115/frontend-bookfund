@@ -31,8 +31,8 @@ export default function Home(){
     },[])
 
      if (books.length > 0){
-        for(let i=0; i< books.length; i++){
-            let waitingsFulFilled = books[i].waitings.filter(waitings=>waitings.fulfilled!==false).length
+        for(let i = 0; i < books.length; i++){
+            let waitingsFulFilled = books[i].waitings.filter(waitings => waitings.fulfilled!==false).length
             waitings.push({[waitingsFulFilled]:books[i]})
         }
         waitings.sort(function (a, b){
@@ -47,7 +47,7 @@ export default function Home(){
         let sponsoredWaitings = backEndWaitings.filter(waiting=>waiting.fulfilled===true)
         let sponsorAOH=[]
         for (let i=0;i<users.length;i++){
-            let userSponsors = sponsoredWaitings.filter(waiting=>waiting.sponsor_id===users[i].id)
+            let userSponsors = sponsoredWaitings.filter(waiting => waiting.sponsor_id === users[i].id)
             sponsorAOH.push({[userSponsors.length]:users[i]})
         }
         let x = sponsorAOH.sort(function (a, b){
