@@ -44,10 +44,6 @@ export default function ReviewForm ({user, book, setSavedBooks, setWaitlistReque
 
     function handleSubmit(e){
         e.preventDefault()
-        if (formState.text.length < 100){
-            alert("Please leave a review with more than 100 characters.")
-        }
-        if (formState.text.length > 100){
             let confObj = {
                     method: 'POST',
                     headers: {
@@ -64,8 +60,6 @@ export default function ReviewForm ({user, book, setSavedBooks, setWaitlistReque
                 .then(response=>response.json())
                 .then(data=>{setSavedBooks(data)})
             })
-            
-        }
     }
 
     return (

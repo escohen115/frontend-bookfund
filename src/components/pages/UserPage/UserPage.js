@@ -19,7 +19,7 @@ export default function UserPage({user, setUser, savedBooks, timeLeft, setTimeLe
     
     const [allWaitings, setAllWaitings] = useState([])
     const [displayTimerTwo, setDisplayTimerTwo] = useState(true)
-    const [editInfo] = useState(false)
+    const [editInfo, setEditInfo] = useState(false)
     const [formState, setFormState] = useState({})
 
     
@@ -139,7 +139,7 @@ export default function UserPage({user, setUser, savedBooks, timeLeft, setTimeLe
 
     }
     if (user){
-
+        console.log(user)
         return(
         <div className="userpage"> 
 
@@ -161,7 +161,7 @@ export default function UserPage({user, setUser, savedBooks, timeLeft, setTimeLe
             </div>
             <div className="userpage-user-info"  >
                 <h3>Profile</h3>
-                <Image src={user.profile_pic ? user.profile_pic : null} size="small" circular style={{float:'left'}}/>
+                {user.profile_pic ? <Image src={user.profile_pic} size="small" circular style={{float:'left'}}/> : null}
                     {editInfo ? null :
                     <div style={{float:'left', marginLeft: '50px'}}>
                         <h4 style={{display:'inline'}}>Name: </h4>{user.name !== "undefined"? user.name : null}
@@ -212,17 +212,13 @@ export default function UserPage({user, setUser, savedBooks, timeLeft, setTimeLe
                     
                 : null}
 
-                {/* <Button style={{float:'right', marginRight: '50px'}} onClick={()=>setEditInfo(!editInfo)}> Edit Profile Info </Button> */}
+                <Button style={{float:'right', marginRight: '50px'}} onClick={()=>setEditInfo(!editInfo)}> Edit Profile Info </Button>
             
             </div>
 
                 
 
 
-
-
-
-                    
         
         
         </div>

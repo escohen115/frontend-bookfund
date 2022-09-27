@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import BackEndBookCard from '../BookIndex/BackEndBookCard'
-import { Card, Button, Image, Icon} from 'semantic-ui-react'
+import { useEffect, useState } from "react"; // built in methods from react to manage state. useEffect will fire upon page render. useState allows for data to change without reloading the page
+import { Link } from "react-router-dom"; // this is a built in Link Component from that library that allows you to build a link to send the user to another page
+import BackEndBookCard from '../BookIndex/BackEndBookCard' //component I built
+import { Card, Button, Image, Icon} from 'semantic-ui-react'//components from this library
 
-export default function Home(){
+export default function Home(){ //this function will export this react component
 
-    const[books,setBooks] = useState([])
-    const[backEndWaitings, setBackEndWaitings] = useState([])
-    const[users, setUsers] = useState([])
-    const[index, setIndex] = useState(0)
+    const[books,setBooks] = useState([]) //a state variable + a function to update it
+    const[backEndWaitings, setBackEndWaitings] = useState([]) //a state variable + a function to update it
+    const[users, setUsers] = useState([])//a state variable + a function to update it
+    const[index, setIndex] = useState(0)//a state variable + a function to update it
 
     let waitings = []
     let waitingsMapped = []
@@ -16,23 +16,24 @@ export default function Home(){
     let topReaders = []
     let topReadersMapped = []
     // console.log(process.env.REACT_APP_API_BASE_URL)
-    useEffect(()=>{
-        fetch(`${process.env.REACT_APP_API_BASE_URL}/books`)
-        .then(response=>response.json())
-        .then(data=>{setBooks(data)})
 
-        fetch(`${process.env.REACT_APP_API_BASE_URL}/users`)
+    useEffect(()=>{ // upon page load:
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/books`)  // this variable has been defined in the .env file. send a GET request to this endpoint  
+        .then(response=>response.json()) //json the response
+        .then(data=>{setBooks(data)}) //use state to set the books
+
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/users`) //same process as above for users
         .then(response=>response.json())
         .then(data=>{setUsers(data)})
         
-        fetch(`${process.env.REACT_APP_API_BASE_URL}/waitings`)
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/waitings`) //same process as above for waitings
         .then(response=>response.json())
         .then(data=>{setBackEndWaitings(data)})
     },[])
 
-     if (books.length > 0){
+     if (books.length > 0){  
         for(let i = 0; i < books.length; i++){
-            let waitingsFulFilled = books[i].waitings.filter(waitings => waitings.fulfilled!==false).length
+            let waitingsFulFilled = books[i].waitings.filter(waitings => waitings.fulfilled !== false).length
             waitings.push({[waitingsFulFilled]:books[i]})
         }
         waitings.sort(function (a, b){
